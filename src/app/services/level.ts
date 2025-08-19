@@ -1,0 +1,69 @@
+import {Injectable} from "@angular/core";
+import {GAME_HEIGHT, GAME_WIDTH, OBJECTS_TYPES} from "../constants/constants";
+import {ObjectsItems, Platform} from "../models/common";
+
+export interface GameLevel {
+  backgroundImage: any;
+  platforms: Platform[];
+  objectsItems: ObjectsItems[];
+
+  getLevelData(): any; // Метод для получения данных уровня
+  // update(deltaTime: number): void; // Метод для обновления логики уровня
+  drawBackground(context: CanvasRenderingContext2D): void;
+
+  drawPlatforms(context: CanvasRenderingContext2D): void;
+}
+
+@Injectable({
+  providedIn: "root"
+})
+
+export class Level implements GameLevel {
+  levelNumber: number;
+  backgroundImage: any;
+  readonly width: number = GAME_WIDTH;
+  readonly height: number = GAME_HEIGHT;
+  platforms: Platform[] = [{x: 200, y: 600, width: 300, height: 20}, {x: 500, y: 500, width: 200, height: 20}, {
+    x: 400, y: 300, width: 200, height: 20
+  }];
+
+  objectsItems: ObjectsItems[] = [{
+    x: 600, y: 520, width: 140, height: 140, type: OBJECTS_TYPES.COMPUTER
+  }];
+
+  constructor() {
+    this.setBackgroundImage();
+    this.levelNumber = 1;
+  }
+
+  getLevelData(): any {
+    return {level: this.levelNumber,};
+  }
+
+  // update(deltaTime: number): void {
+  //   // Базовая логика обновления
+  // }
+
+  setBackgroundImage(backgroundImage?: string) {
+    this.backgroundImage = new Image();
+    this.backgroundImage.src = backgroundImage ? backgroundImage : "assets/background.png";
+  }
+
+  drawPlatforms(context: CanvasRenderingContext2D) {
+    let platformImage = new Image();
+    platformImage.src = "assets/platform.png";
+    let objectImage = new Image();
+    objectImage.src = "assets/computer.png";
+    for (let platform of this.platforms) {
+      context.drawImage(platformImage, 0, 0, 129, 22, platform.x, platform.y, platform.width, platform.height)
+    }
+    for (let object of this.objectsItems) {
+      context.drawImage(objectImage, 0, 0, 288, 288, object.x, object.y, object.width, object.height)
+    }
+  }
+
+  drawBackground(context: CanvasRenderingContext2D) {
+    context.globalAlpha = 0.6
+    context.drawImage(this.backgroundImage, 0, 0, this.width, this.height);
+  }
+}

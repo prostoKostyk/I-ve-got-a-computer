@@ -1,0 +1,3 @@
+<canvas [ngClass]="{'displayNone': playerService.computerOpened}" #gameCanvas class="canvas" width="150" height="150"></canvas>
+<img #playerImage id="player" ngSrc="assets/player.png" alt="" height="913" width="1200">
+<app-computer *ngIf="playerService.computerOpened"></app-computer>
