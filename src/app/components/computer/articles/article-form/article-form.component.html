@@ -1,0 +1,22 @@
+<div class="article-form">
+  <div class="article-form__group">
+    <input placeholder="Заголовок" type="text" [(ngModel)]="newArticle.title" class="article-form__input"/>
+  </div>
+  <div class="article-form__group">
+    <textarea cdkTextareaAutosize placeholder="Содержание" [(ngModel)]="newArticle.content" class="article-form__textarea"></textarea>
+  </div>
+  <div class="article-form__group">
+    <label class="article-form__label">Группа:</label>
+    <select [(ngModel)]="newArticle.group" class="article-form__select">
+      <option *ngFor="let group of availableGroups" [value]="group.group" class="article-form__option">{{ group.group }}</option>
+      <option value="" class="article-form__option">Новая группа</option>
+    </select>
+    <input *ngIf="newArticle.group === ''" type="text" [(ngModel)]="newGroupName" placeholder="Название группы"
+           class="article-form__new-group-input"/>
+  </div>
+  <div class="article-form__group">
+    <label class="article-form__label">URL картинки (разделяйте запятыми):</label>
+    <input type="text" [(ngModel)]="imageUrlString" class="article-form__input"/>
+  </div>
+  <button class="article-form__submit-button" (click)="addArticle()">Добавить</button>
+</div>

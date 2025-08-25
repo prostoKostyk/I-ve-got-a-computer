@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   styleUrl: './computer.component.less'
 })
 export class ComputerComponent {
-
 }

@@ -1,5 +1,5 @@
 import {Inject, Injectable, OnDestroy} from "@angular/core";
-import {GAME_HEIGHT, GAME_WIDTH, KEYS, OBJECTS_TYPES, PlayerStates} from "../constants/constants";
+import {APP_CONDITION, GAME_HEIGHT, GAME_WIDTH, KEYS, OBJECTS_TYPES, PlayerStates} from "../constants/constants";
 import {FallingState, JumpingState, RunningState, StandingState, State} from "./player-states";
 import {ObjectsItems} from "../models/common";
 import {GameLevel} from "./level";
@@ -114,10 +114,8 @@ export class PlayerService implements OnDestroy {
   }
 
   useObject() {
-    console.log("useObject")
     if (this.collisionObject?.type === OBJECTS_TYPES.COMPUTER) {
-      this.x += this.collisionObject.width * 2;
-      this.computerOpened = true;
+      localStorage.setItem("c", APP_CONDITION.COMPUTER_OPENED);
     }
   }
 

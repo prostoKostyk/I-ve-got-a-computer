@@ -8,14 +8,21 @@ import {FormsModule} from "@angular/forms";
 import {LoginComponent} from "./components/login/login.component";
 import {GameComponent} from "./components/game/game.component";
 import {NgOptimizedImage} from "@angular/common";
-import {Level} from "./services/level";
-import {LevelSecond} from "./services/levelSecond";
 import {CURRENT_LEVEL, LevelManagerService} from "./services/level-manager.service";
-import { ComputerComponent } from './components/computer/computer.component';
+import {ComputerComponent} from "./components/computer/computer.component";
+import {
+  ArticleListComponentComponent
+} from "./components/computer/articles/article-list-component/article-list-component.component";
+import {ArticleFormComponent} from "./components/computer/articles/article-form/article-form.component";
+import {ArticleMainComponent} from "./components/computer/articles/article-main/article-main.component";
+import {CdkTextareaAutosize} from "@angular/cdk/text-field";
+import { DesktopComponent } from './components/computer/desktop/desktop/desktop.component';
+import { ArticleGroupComponent } from './components/computer/articles/article-list-component/article-group/article-group.component';
+import { ArticleItemComponent } from './components/computer/articles/article-list-component/article-item/article-item.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, GameComponent, ComputerComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, NgOptimizedImage,],
+  declarations: [AppComponent, LoginComponent, GameComponent, ComputerComponent, ArticleListComponentComponent, ArticleFormComponent, ArticleMainComponent, DesktopComponent, ArticleGroupComponent, ArticleItemComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, NgOptimizedImage, CdkTextareaAutosize,],
   providers: [{
     provide: CURRENT_LEVEL,
     useFactory: (levelManager: LevelManagerService) => levelManager.currentLevel$,

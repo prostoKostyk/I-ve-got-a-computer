@@ -1,0 +1,31 @@
+.desktop {
+  display: grid;
+  grid-template-columns: repeat(9,160px);
+  height: 80vh;
+  grid-gap: 30px;
+  background-color: dodgerblue;
+  padding: 60px;
+  &__folder {
+    cursor: pointer;
+    height: 75px;
+    background-color: #f1f1f1;
+    color: black;
+    padding: 10px;
+    font-size: 30px;
+    text-align: center;
+    position: relative;
+    border-radius: 0 6px 6px 6px;
+    box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.59);
+  }
+  &__folder:before {
+    content: '';
+    width: 50%;
+    height: 12px;
+    border-radius: 0 20px 0 0;
+    background-color: #f1f1f1;
+    position: absolute;
+    top: -12px;
+    left: 0;
+  }
+}
+

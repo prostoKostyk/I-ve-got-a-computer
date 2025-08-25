@@ -18,5 +18,11 @@ export enum KEYS {
 export enum OBJECTS_TYPES {
   COMPUTER =  "Computer"
 }
+export enum APP_CONDITION {
+  LOGIN = "0a",
+  GAME = "1a",
+  COMPUTER_OPENED = "2a",
+  COMPUTER_OPENED_ARTICLES = "2a1",
+}
 
 

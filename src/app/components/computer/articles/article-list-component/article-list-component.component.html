@@ -1,0 +1,12 @@
+<div class="article-list">
+  <h2 class="article-list__title">Список статей</h2>
+  <div *ngFor="let group of availableGroups" class="article-list__group">
+    <app-article-group [group]=group
+                       [articles]="articles"
+                       [availableGroups]="availableGroups"
+                       (articleDeleted)="deleteArticle($event)"
+                       (groupDeleted)="deleteGroup($event)"
+                       (articleUpdated)="updateArticle($event)">
+    </app-article-group>
+  </div>
+</div>

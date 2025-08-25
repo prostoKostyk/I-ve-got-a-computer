@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Inject, OnDestroy, ViewChild} from "@angular/core";
 import {PlayerService} from "../../services/player.service";
-import {GAME_HEIGHT, GAME_WIDTH, KEYS} from "../../constants/constants";
-import {GameLevel, Level} from "../../services/level";
+import {APP_CONDITION, GAME_HEIGHT, GAME_WIDTH, KEYS} from "../../constants/constants";
+import {GameLevel} from "../../services/level";
 import {CURRENT_LEVEL} from "../../services/level-manager.service";
 import {Observable, Subscription} from "rxjs";
 
@@ -19,11 +19,18 @@ export class GameComponent implements AfterViewInit, OnDestroy {
   private initialised: boolean;
   private levelSubscription: Subscription;
   private currentLevel: GameLevel;
+  protected appCondition: APP_CONDITION = APP_CONDITION.GAME;
+  protected readonly APP_CONDITION = APP_CONDITION;
 
   constructor(protected playerService: PlayerService, @Inject(CURRENT_LEVEL) private currentLevel$: Observable<GameLevel>,) {
   }
 
   ngAfterViewInit(): void {
+    this.appCondition = localStorage.getItem("c") as unknown as APP_CONDITION;
+    if (!this.appCondition){
+      localStorage.setItem("c", APP_CONDITION.GAME);
+      this.appCondition = APP_CONDITION.GAME;
+    }
     this.canvas.nativeElement.width = this.width;
     this.canvas.nativeElement.height = this.height;
     // @ts-ignore
@@ -65,9 +72,9 @@ export class GameComponent implements AfterViewInit, OnDestroy {
     window.addEventListener("keydown", e => {
       if (this.availableKeys.includes(e.key) && !this.pressedKeys.includes(e.key)) {
         this.pressedKeys.push(e.key);
-        if (e.key === KEYS.ARROW_UP && this.playerService.computerOpened) {
-          console.log(this.playerService.computerOpened)
-          this.playerService.computerOpened = false;
+        this.appCondition = localStorage.getItem("c") as unknown as APP_CONDITION;
+        if (e.key === KEYS.ARROW_UP && this.appCondition === APP_CONDITION.COMPUTER_OPENED) {
+          localStorage.setItem("c", APP_CONDITION.GAME);
         }
         this.checkPlayerDirection(e.key);
       }
@@ -75,6 +82,7 @@ export class GameComponent implements AfterViewInit, OnDestroy {
 
     window.addEventListener("keyup", e => {
       if (this.availableKeys.includes(e.key) && this.pressedKeys.includes(e.key)) {
+        this.appCondition = localStorage.getItem("c") as unknown as APP_CONDITION;
         this.pressedKeys.splice(this.pressedKeys.indexOf(e.key), 1);
         this.playerService.trySetStandingState();
       }
