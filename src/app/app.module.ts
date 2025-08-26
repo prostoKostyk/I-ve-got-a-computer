@@ -19,9 +19,10 @@ import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import { DesktopComponent } from './components/computer/desktop/desktop/desktop.component';
 import { ArticleGroupComponent } from './components/computer/articles/article-list-component/article-group/article-group.component';
 import { ArticleItemComponent } from './components/computer/articles/article-list-component/article-item/article-item.component';
+import { ArticleSubGroupComponent } from './components/computer/articles/article-list-component/article-sub-group/article-sub-group.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, GameComponent, ComputerComponent, ArticleListComponentComponent, ArticleFormComponent, ArticleMainComponent, DesktopComponent, ArticleGroupComponent, ArticleItemComponent],
+  declarations: [AppComponent, LoginComponent, GameComponent, ComputerComponent, ArticleListComponentComponent, ArticleFormComponent, ArticleMainComponent, DesktopComponent, ArticleGroupComponent, ArticleItemComponent, ArticleSubGroupComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, NgOptimizedImage, CdkTextareaAutosize,],
   providers: [{
     provide: CURRENT_LEVEL,

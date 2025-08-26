@@ -2,12 +2,12 @@ import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {Article, Group, SubGroup} from "../../../../../models/common";
 
 @Component({
-  selector: 'app-article-group',
-  templateUrl: './article-group.component.html',
-  styleUrl: './article-group.component.less'
+  selector: 'app-article-sub-group',
+  templateUrl: './article-sub-group.component.html',
+  styleUrl: './article-sub-group.component.less'
 })
-export class ArticleGroupComponent {
-  @Input() group: Group;
+export class ArticleSubGroupComponent {
+  @Input() subGroup: SubGroup;
   @Input() availableGroups: Group[];
   @Input() articles: Article[];
   @Output() groupDeleted = new EventEmitter<Group>();
@@ -19,20 +19,20 @@ export class ArticleGroupComponent {
   sureSureSureButton:boolean;
   sureSureSureSureButton:boolean;
 
-  toggleGroup(group: Group) {
-    this.visibleGroups[group.group] = !this.visibleGroups[group.group];
+  toggleGroup(subGroup: SubGroup) {
+    this.visibleGroups[subGroup.subGroup] = !this.visibleGroups[subGroup.subGroup];
   }
 
-  isGroupVisible(group: Group): boolean {
-    return this.visibleGroups[group.group];
+  isGroupVisible(subGroup: SubGroup): boolean {
+    return this.visibleGroups[subGroup.subGroup];
   }
 
   deleteGroup(group: Group) {
-    this.sureButton = false;
-    this.sureSureButton = false;
-    this.sureSureSureButton = false;
-    this.sureSureSureSureButton = false;
-    this.groupDeleted.emit(group);
+    // this.sureButton = false;
+    // this.sureSureButton = false;
+    // this.sureSureSureButton = false;
+    // this.sureSureSureSureButton = false;
+    // this.groupDeleted.emit(group);
   }
 
   updateArticle(article: Article) {

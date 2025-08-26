@@ -1,7 +1,7 @@
 <div class="article-group">
   <h3 class="article-group__group-title" (click)="toggleGroup(group)">
     {{ group.group }}
-    <button class="article-group__group-delete" (click)="sureButton=true">Delete Group</button>
+    <button class="article-group__group-delete" (click)="sureButton=true">Delete section</button>
     <button class="article-group__group-delete" *ngIf="sureButton" (click)="sureSureButton=true">Sure?</button>
     <button class="article-group__group-delete" *ngIf="sureSureButton" (click)="sureSureSureButton=true">Sure?Sure?
     </button>
@@ -13,11 +13,15 @@
     </button>
   </h3>
   <div *ngIf="isGroupVisible(group)" class="article-group__group-list">
-    <div *ngFor="let article of getArticlesInGroup(group)" class="article-group__article">
-      <app-article-item [article]="article" [availableGroups]="availableGroups"
-                        (articleDeleted)="deleteArticle($event)"
-                        (articleUpdated)="updateArticle($event)">>
-      </app-article-item>
+    <div *ngFor="let subGroup of group.subGroups" class="article-group__article">
+      <app-article-sub-group
+        [subGroup]=subGroup
+        [articles]="articles"
+        [availableGroups]="availableGroups"
+        (articleDeleted)="deleteArticle($event)"
+        (groupDeleted)="deleteGroup($event)"
+        (articleUpdated)="updateArticle($event)">
+      </app-article-sub-group>
     </div>
   </div>
 </div>

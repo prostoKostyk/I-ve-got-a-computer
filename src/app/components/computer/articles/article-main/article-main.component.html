@@ -1,5 +1,5 @@
 <h1 class="article-goback" (click)="openDesktopEmit()">Go Back</h1>
-<app-article-form class="article__title" (articleAdded)="addArticle($event)" [availableGroups]="availableGroups"></app-article-form>
+<app-article-form class="article__title" (articleAdded)="addArticle($event)" [availableGroups]="availableGroups" [availableSubGroups]="availableSubGroups"></app-article-form>
 <app-article-list-component class="article__title-form" [articles]="articles"
               [availableGroups]="availableGroups"
               (articleDeleted)="deleteArticle($event)"

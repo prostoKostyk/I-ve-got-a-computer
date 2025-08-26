@@ -27,16 +27,18 @@ export interface Article {
   title: string;
   content: string;
   group: string;
+  subGroup: string;
   imageUrls?: string[];
   editing?: boolean;
 }
 
-export interface SubGroup {
-  articles: Article[];
+export interface Group {
+  subGroups: SubGroup[];
   group: string;
 }
 
-export interface Group {
+export interface SubGroup {
   articles: Article[];
-  group: string;
+  subGroup: string;
+  parentGroup: string;
 }
