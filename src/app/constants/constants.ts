@@ -25,4 +25,7 @@ export enum APP_CONDITION {
   COMPUTER_OPENED_ARTICLES = "2a1",
 }
 
+export const NOT_DELETED_SECTIONS = ["Angular", "CSS"];
+export const NOT_DELETED_SUBSECTIONS = ["Angular basic", "CSS Basic"];
+
 

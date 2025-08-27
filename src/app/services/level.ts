@@ -12,6 +12,7 @@ export interface GameLevel {
   drawBackground(context: CanvasRenderingContext2D): void;
 
   drawPlatforms(context: CanvasRenderingContext2D): void;
+  drawComputer(context: CanvasRenderingContext2D, touched?: boolean): void;
 }
 
 @Injectable({
@@ -23,12 +24,12 @@ export class Level implements GameLevel {
   backgroundImage: any;
   readonly width: number = GAME_WIDTH;
   readonly height: number = GAME_HEIGHT;
-  platforms: Platform[] = [{x: 200, y: 600, width: 300, height: 20}, {x: 500, y: 500, width: 200, height: 20}, {
-    x: 400, y: 300, width: 200, height: 20
+  platforms: Platform[] = [{x: 500, y: 490, width: 250, height: 55}, {
+    x: 400, y: 300, width: 250, height: 55
   }];
 
   objectsItems: ObjectsItems[] = [{
-    x: 600, y: 520, width: 140, height: 140, type: OBJECTS_TYPES.COMPUTER
+    x: 470, y: 173, width: 140, height: 140, type: OBJECTS_TYPES.COMPUTER
   }];
 
   constructor() {
@@ -51,12 +52,17 @@ export class Level implements GameLevel {
 
   drawPlatforms(context: CanvasRenderingContext2D) {
     let platformImage = new Image();
-    platformImage.src = "assets/platform.png";
+    platformImage.src = "assets/platforms_1.png";
     let objectImage = new Image();
     objectImage.src = "assets/computer.png";
     for (let platform of this.platforms) {
-      context.drawImage(platformImage, 0, 0, 129, 22, platform.x, platform.y, platform.width, platform.height)
+      context.drawImage(platformImage, 0, 0, 147, 79, platform.x, platform.y, platform.width, platform.height)
     }
+  }
+
+  drawComputer(context: CanvasRenderingContext2D, touched?: boolean) {
+    let objectImage = new Image();
+    objectImage.src = touched ? "assets/computer_with_arrow.png" : "assets/computer.png";
     for (let object of this.objectsItems) {
       context.drawImage(objectImage, 0, 0, 288, 288, object.x, object.y, object.width, object.height)
     }

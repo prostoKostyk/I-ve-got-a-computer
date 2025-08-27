@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from "@angular/core";
 import {RestApiService} from "../../../../services/rest-api.service";
-import {Article, Group, SubGroup} from "../../../../models/common";
+import {Article, DeleteGroupInput, Group, SubGroup} from "../../../../models/common";
 
 @Component({
   selector: "app-article-main", templateUrl: "./article-main.component.html", styleUrl: "./article-main.component.less"
@@ -57,7 +57,11 @@ export class ArticleMainComponent implements OnInit {
         indexOfGroup = this.availableGroups.length - 1;
       }
 
-      const newSubGroup: SubGroup = {subGroup: newArticle.subGroup, articles: [newArticle], parentGroup: newArticle.group};
+      const newSubGroup: SubGroup = {
+        subGroup: newArticle.subGroup,
+        articles: [newArticle],
+        parentGroup: newArticle.group
+      };
       const indexOfSubGroupInGroups = this.availableGroups[indexOfGroup].subGroups.findIndex(sg => sg.subGroup === newArticle.subGroup);
       if (indexOfSubGroupInGroups > -1) {
         this.availableGroups[indexOfGroup].subGroups[indexOfSubGroupInGroups].articles.push(newArticle);
@@ -95,14 +99,16 @@ export class ArticleMainComponent implements OnInit {
     });
   }
 
-  deleteGroup(group: string) {
+  deleteGroup(d: DeleteGroupInput) {
     const flag = false;
     // 1. Delete articles in group on the server
-    const articlesInGroup = this.articles.filter(article => article.group === group);
+    const articlesInGroup = d.subGroup ?
+      this.articles.filter(article => article.subGroup === d.subGroup?.subGroup) :
+      this.articles.filter(article => article.group === d.group?.group);
     articlesInGroup.forEach((article, index) => {
       article._id && this.restApiService.deleteArticle(article._id).subscribe(() => {
-        //2.  Remove the articles for the group from the local articles array
-        index === articlesInGroup.length -1 && this.loadArticles();
+        //2.  Remove the articles for the group from the local articles array`
+        index === articlesInGroup.length - 1 && this.loadArticles();
       }, (error) => {
         console.error("Error deleting article:", error);
       });

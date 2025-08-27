@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {Article, Group, SubGroup} from "../../../../../models/common";
+import {Article, DeleteGroupInput, Group, SubGroup} from "../../../../../models/common";
+import {NOT_DELETED_SECTIONS, NOT_DELETED_SUBSECTIONS} from "../../../../../constants/constants";
 
 @Component({
   selector: 'app-article-sub-group',
@@ -10,7 +11,7 @@ export class ArticleSubGroupComponent {
   @Input() subGroup: SubGroup;
   @Input() availableGroups: Group[];
   @Input() articles: Article[];
-  @Output() groupDeleted = new EventEmitter<Group>();
+  @Output() groupDeleted = new EventEmitter<{ group: Group | null, subGroup?: SubGroup }>();
   @Output() articleDeleted = new EventEmitter<Article>();
   @Output() articleUpdated = new EventEmitter<Article>();
   visibleGroups: { [key: string]: boolean } = {};
@@ -27,12 +28,16 @@ export class ArticleSubGroupComponent {
     return this.visibleGroups[subGroup.subGroup];
   }
 
-  deleteGroup(group: Group) {
-    // this.sureButton = false;
-    // this.sureSureButton = false;
-    // this.sureSureSureButton = false;
-    // this.sureSureSureSureButton = false;
-    // this.groupDeleted.emit(group);
+  deleteGroup(deleteGroupInput: DeleteGroupInput) {
+    this.sureButton = false;
+    this.sureSureButton = false;
+    this.sureSureSureButton = false;
+    this.sureSureSureSureButton = false;
+    this.groupDeleted.emit({group: null, subGroup: deleteGroupInput.subGroup});
+  }
+
+  checkCanBeDeleted(): boolean {
+    return NOT_DELETED_SUBSECTIONS.findIndex(s => s === this.subGroup.subGroup) === -1;
   }
 
   updateArticle(article: Article) {

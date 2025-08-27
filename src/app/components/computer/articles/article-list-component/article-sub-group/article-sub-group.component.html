@@ -1,16 +1,17 @@
 <div class="article-sub-group">
+  <button class="article-sub-group__group-delete" (click)="sureButton=true">Delete subsection</button>
+  <button class="article-sub-group__group-delete" *ngIf="sureButton && checkCanBeDeleted()" (click)="sureSureButton=true">Sure?</button>
+  <button class="article-sub-group__group-delete" *ngIf="sureSureButton" (click)="sureSureSureButton=true">Sure?Sure?
+  </button>
+  <button class="article-sub-group__group-delete" *ngIf="sureSureSureButton" (click)="sureSureSureSureButton=true">
+    Sure?Sure?Sure?
+  </button>
+  <button class="article-sub-group__group-delete" *ngIf="sureSureSureSureButton"
+          (click)="deleteGroup({group: null, subGroup: subGroup})">
+    Sure?Sure?Sure?Sure?Sure?
+  </button>
   <h3 class="article-sub-group__group-title" (click)="toggleGroup(subGroup)">
     {{ subGroup.subGroup }}
-    <button class="article-sub-group__group-delete" (click)="sureButton=true">Delete subsection</button>
-    <button class="article-sub-group__group-delete" *ngIf="sureButton" (click)="sureSureButton=true">Sure?</button>
-    <button class="article-sub-group__group-delete" *ngIf="sureSureButton" (click)="sureSureSureButton=true">Sure?Sure?
-    </button>
-    <button class="article-sub-group__group-delete" *ngIf="sureSureSureButton" (click)="sureSureSureSureButton=true">
-      Sure?Sure?Sure?
-    </button>
-    <!--    <button class="article-sub-group__group-delete" *ngIf="sureSureSureSureButton" (click)="deleteGroup(subGroup)">-->
-    <!--      Sure?Sure?Sure?Sure?Sure?-->
-    <!--    </button>-->
   </h3>
   <div *ngIf="isGroupVisible(subGroup)" class="article-sub-group__group-list">
     <div *ngFor="let article of subGroup.articles" class="article-sub-group__article">

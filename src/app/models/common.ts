@@ -1,6 +1,6 @@
 import {OBJECTS_TYPES} from "../constants/constants";
 
-export interface User  {
+export interface User {
   id?: number;
   _id?: number;
   name: string;
@@ -41,4 +41,9 @@ export interface SubGroup {
   articles: Article[];
   subGroup: string;
   parentGroup: string;
+}
+
+export interface DeleteGroupInput {
+  group: Group | null,
+  subGroup?: SubGroup
 }

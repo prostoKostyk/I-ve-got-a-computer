@@ -22,7 +22,8 @@ export class PlayerService implements OnDestroy {
   mirror: boolean;
   levelData: any;
   collisionObject: ObjectsItems | null;
-  computerOpened: boolean;
+  context: CanvasRenderingContext2D;
+  computerTouched: boolean;
   private readonly _gameWidth: number = GAME_WIDTH;
   private readonly _gameHeight: number = GAME_HEIGHT;
   private readonly states: State[];
@@ -47,7 +48,6 @@ export class PlayerService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // Важно отписаться от Observable при уничтожении сервиса
     this.levelSubscription.unsubscribe();
   }
 
@@ -103,12 +103,14 @@ export class PlayerService implements OnDestroy {
 
   private checkObjectCollision() {
     for (const object of this.currentLevel.objectsItems) {
-      const isYCollision = this.y >= object.y;
+      const isYCollision = this.y >= object.y - object.height && this.y - this.height < object.y;
       const isXCollision = this.x + this.width - 20 > object.x && this.x < object.x + object.width/2;
-      if(isXCollision) {
+      if(isXCollision && isYCollision) {
+        this.computerTouched = true;
         this.collisionObject = object;
         return;
       }
+      this.computerTouched = false;
     }
     this.collisionObject = null;
   }

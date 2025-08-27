@@ -60,6 +60,8 @@ export class GameComponent implements AfterViewInit, OnDestroy {
     this.context.globalAlpha = 1;
     this.context.drawImage(playerImage, playerX, playerY, this.playerService.width, this.playerService.height, this.playerService.x, this.playerService.y, this.playerService.width, this.playerService.height)
     this.currentLevel.drawPlatforms(this.context);
+    this.currentLevel.drawComputer(this.context, this.playerService.computerTouched);
+    this.playerService.context = this.context;
   }
 
   /**

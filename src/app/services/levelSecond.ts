@@ -1,6 +1,6 @@
 import {ElementRef, Injectable} from "@angular/core";
-import {GAME_HEIGHT, GAME_WIDTH, KEYS, PlayerStates} from "../constants/constants";
-import {Platform} from "../models/common";
+import {GAME_HEIGHT, GAME_WIDTH, KEYS, OBJECTS_TYPES, PlayerStates} from "../constants/constants";
+import {ObjectsItems, Platform} from "../models/common";
 import {Level} from "./level";
 
 @Injectable({
@@ -8,7 +8,8 @@ import {Level} from "./level";
 })
 
 export class LevelSecond extends Level {
-  override platforms: Platform[] = [{x: 300, y: 300, width: 300, height: 20}];
+  override platforms: Platform[] = [{x: 300, y: 300, width: 300, height: 55}];
+  override objectsItems: ObjectsItems[] = [];
 
   constructor() {
     super();
