@@ -1,9 +1,9 @@
 <div class="article">
   <div *ngIf="!article.editing; else editArticle">
-    <h4 class="article__title" (click)="toggleArticle(article)">{{ article.title }}
+    <h4 class="article__title" (click)="toggleArticle(article)">{{ article.title + " " + article.order }}
     </h4>
     <div *ngIf="isArticleVisible(article)" class="article__content">
-      <p class="article__text">{{ article.content }}</p>
+      <p class="article__text">{{ article.content}}</p>
       <div *ngIf="article.imageUrls" class="article__images">
         <img *ngFor="let imageUrl of article.imageUrls" [src]="imageUrl" alt="Изображение статьи"
              class="article__image">

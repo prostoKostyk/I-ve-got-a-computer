@@ -89,7 +89,7 @@ export class PlayerService implements OnDestroy {
       const isAbovePlatform = this.y + this.height <= platform.y && // персонаж выше платформы
         this.y + this.height + this.vy >= platform.y; // следующий шаг будет ниже или на уровне платформы
 
-      const isWithinXBounds = this.x + this.width > platform.x && this.x < platform.x + platform.width;
+      const isWithinXBounds = this.x + this.width/2.5 > platform.x && this.x + this.width/2 < platform.x + platform.width;
 
       if (isAbovePlatform && isWithinXBounds) {
         // Персонаж "приземляется" на платформу

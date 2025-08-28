@@ -25,11 +25,11 @@ export class Level implements GameLevel {
   readonly width: number = GAME_WIDTH;
   readonly height: number = GAME_HEIGHT;
   platforms: Platform[] = [{x: 500, y: 490, width: 250, height: 55}, {
-    x: 400, y: 300, width: 250, height: 55
+    x: 200, y: 300, width: 350, height: 55
   }];
 
   objectsItems: ObjectsItems[] = [{
-    x: 470, y: 173, width: 140, height: 140, type: OBJECTS_TYPES.COMPUTER
+    x: 220, y: 173, width: 140, height: 140, type: OBJECTS_TYPES.COMPUTER
   }];
 
   constructor() {

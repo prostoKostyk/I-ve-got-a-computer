@@ -30,6 +30,7 @@ export interface Article {
   subGroup: string;
   imageUrls?: string[];
   editing?: boolean;
+  order: number;
 }
 
 export interface Group {

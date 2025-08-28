@@ -7,7 +7,7 @@ import {Article, Group, SubGroup} from "../../../../models/common";
   styleUrl: './article-form.component.less'
 })
 export class ArticleFormComponent {
-  newArticle: Article = { title: '', content: '', group: '', subGroup: '', imageUrls: [] };
+  newArticle: Article = { title: '', content: '', group: '', subGroup: '', imageUrls: [], order: 999999999999999};
   imageUrlString: string = '';
   newGroupName: string = '';
   newSubGroupName: string = '';
@@ -21,10 +21,14 @@ export class ArticleFormComponent {
     }
     if (this.newArticle.subGroup === '' && this.newSubGroupName) {
       this.newArticle.subGroup = this.newSubGroupName;
+      this.newArticle.order = 1;
+    } else {
+      const subGroup = this.availableSubGroups.find(sb => sb.articles.findIndex(sb2 => sb2.subGroup === this.newArticle.subGroup) > -1);
+      this.newArticle.order = (subGroup?.articles.length || 999999999999999) + 1;
     }
     this.newArticle.imageUrls = this.imageUrlString.split(',').map(url => url.trim()).filter(url => url !== '');
     this.articleAdded.emit(this.newArticle);
-    this.newArticle = { title: '', content: '', group: '', subGroup: '', imageUrls: [] };
+    this.newArticle = { title: '', content: '', group: '', subGroup: '', imageUrls: [], order: 999999999999999};
     this.imageUrlString = '';
     this.newGroupName = '';
     this.newSubGroupName = '';

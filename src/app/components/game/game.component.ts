@@ -11,6 +11,8 @@ import {Observable, Subscription} from "rxjs";
 export class GameComponent implements AfterViewInit, OnDestroy {
   @ViewChild("gameCanvas") canvas: ElementRef<HTMLCanvasElement>;
   lastTime: number = 0;
+  protected appCondition: APP_CONDITION = APP_CONDITION.GAME;
+  protected readonly APP_CONDITION = APP_CONDITION;
   private context: CanvasRenderingContext2D;
   private readonly width: number = GAME_WIDTH;
   private readonly height: number = GAME_HEIGHT;
@@ -19,15 +21,13 @@ export class GameComponent implements AfterViewInit, OnDestroy {
   private initialised: boolean;
   private levelSubscription: Subscription;
   private currentLevel: GameLevel;
-  protected appCondition: APP_CONDITION = APP_CONDITION.GAME;
-  protected readonly APP_CONDITION = APP_CONDITION;
 
   constructor(protected playerService: PlayerService, @Inject(CURRENT_LEVEL) private currentLevel$: Observable<GameLevel>,) {
   }
 
   ngAfterViewInit(): void {
     this.appCondition = localStorage.getItem("c") as unknown as APP_CONDITION;
-    if (!this.appCondition){
+    if (!this.appCondition) {
       localStorage.setItem("c", APP_CONDITION.GAME);
       this.appCondition = APP_CONDITION.GAME;
     }
@@ -47,6 +47,26 @@ export class GameComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.levelSubscription.unsubscribe();
+  }
+
+  private animate(timeStamp: number, canvas: ElementRef<HTMLCanvasElement>, context: CanvasRenderingContext2D, pressedKeys: string[]) {
+    this.canvas = canvas;
+    this.context = context;
+    const deltaTime = timeStamp - this.lastTime;
+    this.lastTime = timeStamp;
+    console.log("animate")
+
+    context.clearRect(0, 0, this.width, this.height);
+    this.playerService.update(pressedKeys, deltaTime);
+    this.draw();
+    if (this.appCondition.indexOf(APP_CONDITION.COMPUTER_OPENED) !== -1) {
+      setTimeout(() => {
+        this.appCondition = localStorage.getItem("c") as unknown as APP_CONDITION;
+          window.requestAnimationFrame((_timeStamp) => this.animate(_timeStamp, canvas, context, pressedKeys));
+      }, 1000);
+    } else {
+      window.requestAnimationFrame((_timeStamp) => this.animate(_timeStamp, canvas, context, pressedKeys));
+    }
   }
 
   draw() {
@@ -102,17 +122,5 @@ export class GameComponent implements AfterViewInit, OnDestroy {
     } else if (key === KEYS.ARROW_RIGHT) {
       this.playerService.mirror = false;
     }
-  }
-
-  private animate(timeStamp: number, canvas: ElementRef<HTMLCanvasElement>, context: CanvasRenderingContext2D, pressedKeys: string[]) {
-    this.canvas = canvas;
-    this.context = context;
-    const deltaTime = timeStamp - this.lastTime;
-    this.lastTime = timeStamp;
-
-    context.clearRect(0, 0, this.width, this.height);
-    this.playerService.update(pressedKeys, deltaTime);
-    this.draw();
-    window.requestAnimationFrame((_timeStamp) => this.animate(_timeStamp, canvas, context, pressedKeys));
   }
 }

@@ -68,13 +68,6 @@ export class ArticleMainComponent implements OnInit {
       } else {
         this.availableGroups[indexOfGroup].subGroups.push(newSubGroup)
       }
-
-      const indexOfSubGroup = this.availableSubGroups.findIndex(sg => sg.subGroup === newArticle.subGroup)
-      if (indexOfSubGroup > -1) {
-        this.availableSubGroups[indexOfSubGroup].articles.push(newArticle);
-      } else {
-        this.availableSubGroups.push(newSubGroup);
-      }
     }, (error) => {
       console.error("Error adding article:", error);
     });
