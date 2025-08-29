@@ -1,0 +1,45 @@
+<div class="article">
+  <div *ngIf="!article.editing; else editArticle">
+    <h4 class="article__title" (click)="toggleArticle(article)">{{ article.title + " " + article.order }}
+    </h4>
+    <div *ngIf="isArticleVisible(article)" class="article__content">
+      <p class="article__text">{{ article.content}}</p>
+      <div *ngIf="article.imageUrls" class="article__images">
+        <img *ngFor="let imageUrl of article.imageUrls" [src]="imageUrl" alt="Изображение статьи"
+             class="article__image">
+      </div>
+      <button class="article__edit" (click)="editArticleStart(article)">Edit</button>
+      <button class="article__delete" (click)="sureButton=true">Delete</button>
+      <button class="article__delete" *ngIf="sureButton" (click)="sureSureButton=true">Sure?</button>
+      <button class="article__delete" *ngIf="sureSureButton" (click)="deleteArticle(article)">Sure?Sure
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #editArticle>
+  <div class="article__edit-form">
+    <div><label class="article__edit-label">Заголовок:</label>
+      <input type="text" [(ngModel)]="article.title" class="article__edit-input"/>
+    </div>
+    <div>
+      <label class="article__edit-label">Содержание:</label>
+      <textarea [(ngModel)]="article.content" class="article__edit-textarea"></textarea>
+    </div>
+    <div>
+      <label class="article__edit-label">Группа:</label>
+      <select [(ngModel)]="article.group" class="article__edit-select">
+        <option *ngFor="let group of availableGroups" [value]="group.group"
+                class="article__edit-option">{{ group.group }}
+        </option>
+        <option value="" class="article__edit-option">Новая группа</option>
+      </select>
+    </div>
+    <div>
+      <label class="article__edit-label">URL картинки (через запятые):</label>
+      <input type="text" [(ngModel)]="imageUrlString" class="article__edit-input"/>
+    </div>
+    <button class="article__edit-save" (click)="updateArticle(article)">Сохранить</button>
+    <button class="article__edit-cancel" (click)="cancelEdit(article)">Отмена</button>
+  </div>
+</ng-template>
