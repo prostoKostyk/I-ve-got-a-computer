@@ -16,7 +16,7 @@
   <div *ngIf="isGroupVisible(subGroup)" class="article-sub-group__group-list">
     <div cdkDropList class="article-sub-group__group-list" (cdkDropListDropped)="drop($event)">
       @for (article of subGroup.articles; track article) {
-        <app-article-item cdkDrag [article]="article" [availableGroups]="availableGroups"
+        <app-article-item [article]="article" [availableGroups]="availableGroups"
                           (articleDeleted)="deleteArticle($event)"
                           (articleUpdated)="updateArticle($event)">>
         </app-article-item>
