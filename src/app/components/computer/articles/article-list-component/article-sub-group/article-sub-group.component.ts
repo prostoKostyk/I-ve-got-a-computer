@@ -18,10 +18,7 @@ export class ArticleSubGroupComponent {
   @Output() articleDeleted = new EventEmitter<Article>();
   @Output() articleUpdated = new EventEmitter<Article>();
   visibleGroups: { [key: string]: boolean } = {};
-  sureButton:boolean;
-  sureSureButton:boolean;
-  sureSureSureButton:boolean;
-  sureSureSureSureButton:boolean;
+  sureButtonsArray: boolean[] = [false, false, false, false];
 
   constructor(private restApiService: RestApiService) {
   }
@@ -44,14 +41,14 @@ export class ArticleSubGroupComponent {
 
   updateArticlesOrder(): void {
     this.subGroup.articles.forEach((article, index) => {
-      article.order = index + 1; // Обновляем поле order
+      article.order = index + 1;
     });
   }
 
   updateArticlesOrderBackend(previousIndex: number, currentIndex: number) {
     const updatedArticlePrevious = this.subGroup.articles[previousIndex];
     const updatedArticleCurrent = this.subGroup.articles[currentIndex];
-    updatedArticlePrevious._id && updatedArticleCurrent._id &&forkJoin(
+    updatedArticlePrevious._id && updatedArticleCurrent._id && forkJoin(
       this.restApiService.updateArticle(updatedArticlePrevious._id, updatedArticlePrevious),
       this.restApiService.updateArticle(updatedArticleCurrent._id, updatedArticleCurrent),
     ).subscribe(([res1, res2]) => {
@@ -60,16 +57,8 @@ export class ArticleSubGroupComponent {
       });
   }
 
-  isGroupVisible(subGroup: SubGroup): boolean {
+  isSubGroupVisible(subGroup: SubGroup): boolean {
     return this.visibleGroups[subGroup.subGroup];
-  }
-
-  deleteGroup(deleteGroupInput: DeleteGroupInput) {
-    this.sureButton = false;
-    this.sureSureButton = false;
-    this.sureSureSureButton = false;
-    this.sureSureSureSureButton = false;
-    this.groupDeleted.emit({group: null, subGroup: deleteGroupInput.subGroup});
   }
 
   checkCanBeDeleted(): boolean {
@@ -78,6 +67,11 @@ export class ArticleSubGroupComponent {
 
   updateArticle(article: Article) {
     this.articleUpdated.emit(article);
+  }
+
+  deleteGroup(deleteGroupInput: DeleteGroupInput) {
+    this.sureButtonsArray = this.sureButtonsArray.map(() => false);
+    this.groupDeleted.emit({group: null, subGroup: deleteGroupInput.subGroup});
   }
 
   deleteArticle(article: Article) {

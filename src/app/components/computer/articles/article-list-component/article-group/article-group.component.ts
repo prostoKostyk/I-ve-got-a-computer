@@ -15,10 +15,7 @@ export class ArticleGroupComponent {
   @Output() articleDeleted = new EventEmitter<Article>();
   @Output() articleUpdated = new EventEmitter<Article>();
   visibleGroups: { [key: string]: boolean } = {};
-  sureButton:boolean;
-  sureSureButton:boolean;
-  sureSureSureButton:boolean;
-  sureSureSureSureButton:boolean;
+  sureButtonsArray: boolean[] = [false, false, false, false];
 
   toggleGroup(group: Group) {
     this.visibleGroups[group.group] = !this.visibleGroups[group.group];
@@ -32,16 +29,13 @@ export class ArticleGroupComponent {
     return this.visibleGroups[group.group];
   }
 
-  deleteGroup(d: DeleteGroupInput) {
-    this.sureButton = false;
-    this.sureSureButton = false;
-    this.sureSureSureButton = false;
-    this.sureSureSureSureButton = false;
-    this.groupDeleted.emit({group: d.group, subGroup: d.subGroup});
-  }
-
   updateArticle(article: Article) {
     this.articleUpdated.emit(article);
+  }
+
+  deleteGroup(d: DeleteGroupInput) {
+    this.sureButtonsArray = this.sureButtonsArray.map(() => false);
+    this.groupDeleted.emit({group: d.group, subGroup: d.subGroup});
   }
 
   deleteArticle(article: Article) {

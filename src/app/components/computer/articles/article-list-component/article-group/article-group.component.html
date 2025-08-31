@@ -1,12 +1,12 @@
 <div class="article-group">
-    <button class="article-group__group-delete" (click)="sureButton=true">Delete section</button>
-    <button class="article-group__group-delete" *ngIf="sureButton && checkCanBeDeleted()" (click)="sureSureButton=true">Sure?</button>
-    <button class="article-group__group-delete" *ngIf="sureSureButton" (click)="sureSureSureButton=true">Sure?Sure?
+    <button class="article-group__group-delete" (click)="sureButtonsArray[0]=true">Delete section</button>
+    <button class="article-group__group-delete" *ngIf="sureButtonsArray[0] && checkCanBeDeleted()" (click)="sureButtonsArray[1]=true">Sure?</button>
+    <button class="article-group__group-delete" *ngIf="sureButtonsArray[1]" (click)="sureButtonsArray[2]=true">Sure?Sure?
     </button>
-    <button class="article-group__group-delete" *ngIf="sureSureSureButton" (click)="sureSureSureSureButton=true">
+    <button class="article-group__group-delete" *ngIf="sureButtonsArray[2]" (click)="sureButtonsArray[3]=true">
       Sure?Sure?Sure?
     </button>
-    <button class="article-group__group-delete" *ngIf="sureSureSureSureButton" (click)="deleteGroup({group})">
+    <button class="article-group__group-delete" *ngIf="sureButtonsArray[3]" (click)="deleteGroup({group})">
       Sure?Sure?Sure?Sure?Sure?
     </button>
     <h3 class="article-group__group-title" (click)="toggleGroup(group)">

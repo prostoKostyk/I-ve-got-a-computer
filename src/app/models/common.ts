@@ -28,7 +28,7 @@ export interface Article {
   content: string;
   group: string;
   subGroup: string;
-  imageUrls?: string[];
+  imageUrls?: string;
   editing?: boolean;
   order: number;
 }

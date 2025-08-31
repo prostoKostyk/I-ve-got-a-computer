@@ -1,22 +1,22 @@
 <div class="article-sub-group">
-  <button class="article-sub-group__group-delete" (click)="sureButton=true">Delete subsection</button>
-  <button class="article-sub-group__group-delete" *ngIf="sureButton && checkCanBeDeleted()" (click)="sureSureButton=true">Sure?</button>
-  <button class="article-sub-group__group-delete" *ngIf="sureSureButton" (click)="sureSureSureButton=true">Sure?Sure?
+  <button class="article-sub-group__group-delete" (click)="sureButtonsArray[0]=true">Delete subsection</button>
+  <button class="article-sub-group__group-delete" *ngIf="sureButtonsArray[0] && checkCanBeDeleted()" (click)="sureButtonsArray[1]=true">Sure?</button>
+  <button class="article-sub-group__group-delete" *ngIf="sureButtonsArray[1]" (click)="sureButtonsArray[2]=true">Sure?Sure?
   </button>
-  <button class="article-sub-group__group-delete" *ngIf="sureSureSureButton" (click)="sureSureSureSureButton=true">
+  <button class="article-sub-group__group-delete" *ngIf="sureButtonsArray[2]" (click)="sureButtonsArray[3]=true">
     Sure?Sure?Sure?
   </button>
-  <button class="article-sub-group__group-delete" *ngIf="sureSureSureSureButton"
+  <button class="article-sub-group__group-delete" *ngIf="sureButtonsArray[3]"
           (click)="deleteGroup({group: null, subGroup: subGroup})">
     Sure?Sure?Sure?Sure?Sure?
   </button>
   <h3 class="article-sub-group__group-title" (click)="toggleGroup(subGroup)">
     {{ subGroup.subGroup }}
   </h3>
-  <div *ngIf="isGroupVisible(subGroup)" class="article-sub-group__group-list">
+  <div *ngIf="isSubGroupVisible(subGroup)" class="article-sub-group__group-list">
     <div cdkDropList class="article-sub-group__group-list" (cdkDropListDropped)="drop($event)">
       @for (article of subGroup.articles; track article) {
-        <app-article-item cdkDrag [article]="article" [availableGroups]="availableGroups"
+        <app-article-item [article]="article" [availableGroups]="availableGroups"
                           (articleDeleted)="deleteArticle($event)"
                           (articleUpdated)="updateArticle($event)">>
         </app-article-item>

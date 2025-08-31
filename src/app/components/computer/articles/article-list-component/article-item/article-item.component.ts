@@ -9,16 +9,14 @@ export class ArticleItemComponent {
   @Input() availableGroups: Group[];
   @Output() articleDeleted = new EventEmitter<Article>();
   @Output() articleUpdated = new EventEmitter<Article>();
-  sureButton: boolean;
-  sureSureButton: boolean;
-  sureSureSureButton: boolean;
-  sureSureSureSureButton: boolean;
+  sureButtonsArray: boolean[] = [false, false, false];
   visibleArticles: { [key: string]: boolean } = {};
-  imageUrlString: string = "";
+  imageUrlsArray: string[] = [];
 
   toggleArticle(article: any) {
     const articleId = this.getArticleId(article);
     this.visibleArticles[articleId] = !this.visibleArticles[articleId];
+    this.visibleArticles[articleId] && this.getImagesArray();
   }
 
   private getArticleId(article: any): string {
@@ -29,15 +27,19 @@ export class ArticleItemComponent {
     return this.visibleArticles[this.getArticleId(article)];
   }
 
+  getImagesArray() {
+    this.imageUrlsArray = this.article.imageUrls?.split(",") || [];
+  }
+
   updateArticle(article: Article) {
-    article.imageUrls = this.imageUrlString.split(",").map(url => url.trim()).filter(url => url !== "");
+    // article.imageUrls = this.imageUrlString.split(",").map(url => url.trim()).filter(url => url !== "");
     article.editing = false;
     this.articleUpdated.emit(article);
   }
 
   editArticleStart(article: Article) {
     article.editing = true;
-    this.imageUrlString = article.imageUrls ? article.imageUrls.join(",") : "";
+    // this.imageUrlString = article.imageUrls ? article.imageUrls.join(",") : "";
   }
 
   cancelEdit(article: Article) {
@@ -45,10 +47,7 @@ export class ArticleItemComponent {
   }
 
   deleteArticle(article: Article) {
-    this.sureButton = false;
-    this.sureSureButton = false;
-    this.sureSureSureButton = false;
-    this.sureSureSureSureButton = false;
+    this.sureButtonsArray = this.sureButtonsArray.map(() => false);
     this.articleDeleted.emit(article);
   }
 }
