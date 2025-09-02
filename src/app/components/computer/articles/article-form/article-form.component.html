@@ -5,8 +5,7 @@
       <option *ngFor="let group of availableGroups" [value]="group.group" class="article-form__option">{{ group.group }}</option>
       <option value="" class="article-form__option">New section</option>
     </select>
-    <input *ngIf="newArticle.group === ''" type="text" [(ngModel)]="newGroupName" placeholder="Section"
-           class="article-form__input"/>
+    <input class="article-form__input" *ngIf="newArticle.group === ''" type="text" [(ngModel)]="newGroupName" placeholder="Section"/>
   </div>
   <div class="article-form__group">
     <label class="article-form__label">Subsection</label>
@@ -19,6 +18,21 @@
   </div>
   <div class="article-form__group">
     <input placeholder="Заголовок" type="text" [(ngModel)]="newArticle.title" class="article-form__input"/>
+  </div>
+  <div class="article-form__group">
+    <button class="article-form__textarea-controls-bold-button"
+            [ngClass]="{'article-form__textarea-bold-controls-clicked': isBoldText }" type="button"
+            (click)="setBoldValue()">
+      <b>B</b>
+    </button>
+    <div class="article-form__textarea-controls-input">
+      <input type="text" placeholder="URL картинки" [(ngModel)]="imageUrlInput" class="article-form__input"/>
+    </div>
+    <button class="article-form__textarea-controls-button"
+            type="button"
+            (click)="addPicture()">
+      <b>Add pic</b>
+    </button>
   </div>
   <div class="article-form__group">
     <textarea cdkTextareaAutosize placeholder="Содержание" [(ngModel)]="newArticle.content" class="article-form__textarea"></textarea>

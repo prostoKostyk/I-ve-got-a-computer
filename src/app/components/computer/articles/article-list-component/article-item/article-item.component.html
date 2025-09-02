@@ -3,7 +3,7 @@
     <h4 class="article__title" cdkDrag (click)="toggleArticle(article)">{{ article.title + " " + article.order }}
     </h4>
     <div *ngIf="isArticleVisible(article)" class="article__content">
-      <p class="article__text">{{ article.content}}</p>
+      <p class="article__text" [innerHTML]="article.content | safehtml"></p>
       <div *ngIf="article.imageUrls" class="article__images">
         <img *ngFor="let imageUrl of this.imageUrlsArray" [src]="imageUrl" alt="Изображение статьи"
              class="article__image">
