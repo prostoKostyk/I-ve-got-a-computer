@@ -1,26 +1,37 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from "@angular/core";
 import {Article, Group, SubGroup} from "../../../../models/common";
-import {FormBuilder, FormControl, FormGroup, UntypedFormControl} from "@angular/forms";
-import {ARTICLE_FORM_FIELDS} from "../../../../constants/constants";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-article-form',
   templateUrl: './article-form.component.html',
   styleUrl: './article-form.component.less'
 })
-export class ArticleFormComponent {
+
+export class ArticleFormComponent implements AfterViewInit  {
   @Input() availableGroups: Group[];
   @Input() availableSubGroups: SubGroup[];
   @Output() articleAdded = new EventEmitter<Article>();
 
   articleForm: FormGroup;
-  newArticle: Article = { title: '', content: '', group: '', subGroup: '', order: 999999999999999};
+  newArticle: Article = { title: '', content: '', group: '', subGroup: '', order: 999999999999999, ignoreHtml: false};
   newGroupName: string = '';
   newSubGroupName: string = '';
   filteredSubGroups: SubGroup[];
   imageUrlString: string = '';
   isBoldText: boolean;
   imageUrlInput: string;
+
+  cursorPosition: number;
+  selectionStart: number;
+  selectionEnd: number;
+  selectedText: string;
+
+  @ViewChild('textarea') textarea: ElementRef;
+
+  ngAfterViewInit() {
+    this.updateCursorPosition(); // Вызывается при загрузке компонента для инициализации значения
+  }
 
   addArticle() {
     if (this.newArticle.group === '' && this.newGroupName) {
@@ -35,7 +46,7 @@ export class ArticleFormComponent {
     }
     this.newArticle.imageUrls = this.imageUrlString;
     this.articleAdded.emit(this.newArticle);
-    this.newArticle = { title: '', content: '', group: '', subGroup: '', imageUrls: "", order: 999999999999999};
+    this.newArticle = { title: '', content: '', group: '', subGroup: '', imageUrls: "", order: 999999999999999, ignoreHtml: false};
     this.imageUrlString = '';
     this.newGroupName = '';
     this.newSubGroupName = '';
@@ -47,13 +58,38 @@ export class ArticleFormComponent {
     this.filteredSubGroups = this.availableSubGroups.filter((sb) => sb.parentGroup === this.newArticle.group);
   }
 
-  setBoldValue() {
-    this.isBoldText = !this.isBoldText;
-    this.newArticle.content += this.isBoldText ? "<b>" : "</b>";
+  updateCursorPosition() {
+    if (this.textarea && this.textarea.nativeElement) {
+      this.cursorPosition = this.textarea.nativeElement.selectionStart;
+      const textarea = this.textarea.nativeElement;
+      this.selectionStart = textarea.selectionStart;
+      this.selectionEnd = textarea.selectionEnd;
+      this.selectedText = textarea.value.substring(this.selectionStart, this.selectionEnd);
+    } else {
+      this.cursorPosition = this.newArticle.content.length - 1;
+      this.selectionStart = -1;
+      this.selectionEnd = -1;
+      this.selectedText = '';
+    }
   }
 
-  addPicture() {
-    this.newArticle.content += " <p><img src=\"" + this.imageUrlInput + "\" alt=\"В\" style=\"max-width: 100%;\"></p> "
+  insertBoldTag() {
+    const currentInput = this.newArticle.content;
+    if (!this.isBoldText && this.selectionStart > -1 && this.selectionEnd) { // Вставка тегов вокруг выделленого текста
+      this.newArticle.content =
+        currentInput.slice(0, this.selectionStart) + "<b>"
+        + currentInput.slice(this.selectionStart, this.selectionEnd) + "</b>"
+        + currentInput.slice(this.selectionEnd);
+      return;
+    }
+    this.isBoldText = !this.isBoldText;
+    this.newArticle.content = currentInput.slice(0, this.cursorPosition) + (this.isBoldText ? "<b>" : "</b>") + currentInput.slice(this.cursorPosition);
+  }
+
+  insertIMG() {
+    const currentInput = this.newArticle.content;
+    const image = " <p><img src=\"" + this.imageUrlInput + "\" alt=\"В\" style=\"max-width: 100%;\"></p> "
+    this.newArticle.content = currentInput.slice(0, this.cursorPosition) + image + currentInput.slice(this.cursorPosition);
     this.imageUrlInput = ""
   }
 }

@@ -31,6 +31,7 @@ export interface Article {
   imageUrls?: string;
   editing?: boolean;
   order: number;
+  ignoreHtml: boolean;
 }
 
 export interface Group {
