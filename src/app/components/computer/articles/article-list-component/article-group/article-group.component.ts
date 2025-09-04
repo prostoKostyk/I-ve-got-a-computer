@@ -18,7 +18,7 @@ export class ArticleGroupComponent {
   sureButtonsArray: boolean[] = [false, false, false, false];
 
   toggleGroup(group: Group) {
-    this.visibleGroups[group.group] = !this.visibleGroups[group.group];
+    this.group.open = !this.group.open;
   }
 
   checkCanBeDeleted(): boolean {
@@ -26,7 +26,7 @@ export class ArticleGroupComponent {
   }
 
   isGroupVisible(group: Group): boolean {
-    return this.visibleGroups[group.group];
+    return Boolean(this.group.open);
   }
 
   updateArticle(article: Article) {

@@ -1,4 +1,4 @@
-<div class="article-form">
+<div class="article-form" *ngIf="formVisible">
   <div class="article-form__group">
     <label class="article-form__label">Section</label>
     <select [(ngModel)]="newArticle.group" (change)="filterSubGroups()" class="article-form__select">
@@ -51,3 +51,4 @@
   </div>
   <button class="article-form__submit-button" (click)="addArticle()">Добавить</button>
 </div>
+<button class="article-form__submit-button form-open-button" [ngClass]="{'background-blue': formVisible}" (click)="openForm()">{{formVisible ? 'X' : '+' }}</button>

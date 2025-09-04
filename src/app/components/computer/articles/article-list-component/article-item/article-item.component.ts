@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {Article, Group} from "../../../../../models/common";
+import {MatCheckboxChange} from "@angular/material/checkbox";
+import {RestApiService} from "../../../../../services/rest-api.service";
 
 @Component({
   selector: "app-article-item", templateUrl: "./article-item.component.html", styleUrl: "./article-item.component.less"
@@ -12,6 +14,9 @@ export class ArticleItemComponent {
   sureButtonsArray: boolean[] = [false, false, false];
   visibleArticles: { [key: string]: boolean } = {};
   imageUrlsArray: string[] = [];
+
+  constructor(private restApiService: RestApiService) {
+  }
 
   toggleArticle(article: any) {
     const articleId = this.getArticleId(article);
@@ -32,14 +37,12 @@ export class ArticleItemComponent {
   }
 
   updateArticle(article: Article) {
-    // article.imageUrls = this.imageUrlString.split(",").map(url => url.trim()).filter(url => url !== "");
     article.editing = false;
     this.articleUpdated.emit(article);
   }
 
   editArticleStart(article: Article) {
     article.editing = true;
-    // this.imageUrlString = article.imageUrls ? article.imageUrls.join(",") : "";
   }
 
   cancelEdit(article: Article) {
@@ -49,5 +52,12 @@ export class ArticleItemComponent {
   deleteArticle(article: Article) {
     this.sureButtonsArray = this.sureButtonsArray.map(() => false);
     this.articleDeleted.emit(article);
+  }
+
+  updateDoneField(event: MatCheckboxChange) {
+    this.article._id && this.restApiService.updateArticle(this.article._id, this.article).subscribe({
+      next: (s) => console.log(s),
+      error: (err) => console.error("Error updating article:", err)
+    });
   }
 }

@@ -32,11 +32,13 @@ export interface Article {
   editing?: boolean;
   order: number;
   ignoreHtml: boolean;
+  done?: boolean;
 }
 
 export interface Group {
   subGroups: SubGroup[];
   group: string;
+  open?: boolean;
 }
 
 export interface SubGroup {

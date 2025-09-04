@@ -25,4 +25,8 @@ export class ArticleListComponentComponent {
     this.articleUpdated.emit(article);
   }
 
+  closeAllGroups() {
+    this.availableGroups.map(g => g.open = false)
+  }
+
 }

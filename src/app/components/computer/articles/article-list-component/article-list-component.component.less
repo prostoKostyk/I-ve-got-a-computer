@@ -1,8 +1,27 @@
 .article-list {
   padding: 10px;
-  min-height: 80vh;
+  min-height: 90vh;
   margin-left: 15%;
   margin-right: 12%;
   border: 0.8px solid rgb(61, 68, 77);
   border-radius: 6px;
+
+  &__toggle-button {
+    position: fixed;
+    bottom: 10%;
+    right: 4%;
+    box-shadow: 0 1px 1px 0 #01040999, 0 1px 3px 0 #01040999;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 1rem;
+    min-height: 2rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    margin-left: 20px;
+    padding: calc(.875rem - 1px) calc(2rem - 1px);
+    width: auto;
+    background-color: #388bfd1a;
+    color: #4493f8;
+  }
 }

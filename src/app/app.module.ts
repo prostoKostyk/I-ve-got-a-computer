@@ -22,10 +22,11 @@ import { ArticleItemComponent } from './components/computer/articles/article-lis
 import { ArticleSubGroupComponent } from './components/computer/articles/article-list-component/article-sub-group/article-sub-group.component';
 import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
 import {SafeHtmlPipe} from "./pipes/safehtml.pipe";
+import {MatCheckbox} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, GameComponent, ComputerComponent, ArticleListComponentComponent, ArticleFormComponent, ArticleMainComponent, DesktopComponent, ArticleGroupComponent, ArticleItemComponent, ArticleSubGroupComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, NgOptimizedImage, CdkTextareaAutosize, CdkDropList, CdkDrag, SafeHtmlPipe, ReactiveFormsModule,],
+    imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, NgOptimizedImage, CdkTextareaAutosize, CdkDropList, CdkDrag, SafeHtmlPipe, ReactiveFormsModule, MatCheckbox,],
   providers: [{
     provide: CURRENT_LEVEL,
     useFactory: (levelManager: LevelManagerService) => levelManager.currentLevel$,

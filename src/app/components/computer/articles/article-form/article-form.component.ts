@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from "@angular/core";
 import {Article, Group, SubGroup} from "../../../../models/common";
-import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-article-form',
@@ -13,7 +12,7 @@ export class ArticleFormComponent implements AfterViewInit  {
   @Input() availableSubGroups: SubGroup[];
   @Output() articleAdded = new EventEmitter<Article>();
 
-  articleForm: FormGroup;
+  formVisible: boolean;
   newArticle: Article = { title: '', content: '', group: '', subGroup: '', order: 999999999999999, ignoreHtml: false};
   newGroupName: string = '';
   newSubGroupName: string = '';
@@ -31,6 +30,10 @@ export class ArticleFormComponent implements AfterViewInit  {
 
   ngAfterViewInit() {
     this.updateCursorPosition(); // Вызывается при загрузке компонента для инициализации значения
+  }
+
+  openForm() {
+    this.formVisible = !this.formVisible;
   }
 
   addArticle() {

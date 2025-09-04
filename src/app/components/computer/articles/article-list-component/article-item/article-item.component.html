@@ -1,5 +1,6 @@
 <div class="article">
   <div *ngIf="!article.editing; else editArticle">
+    <mat-checkbox class="article__title-checkbox" [(ngModel)]="article.done" (change)="updateDoneField($event)"></mat-checkbox>
     <h4 class="article__title" cdkDrag (click)="toggleArticle(article)">{{ article.title + " " + article.order }}
     </h4>
     <div *ngIf="isArticleVisible(article)" class="article__content">
