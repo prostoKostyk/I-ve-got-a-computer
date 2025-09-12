@@ -10,7 +10,7 @@
           (click)="deleteGroup({group: null, subGroup: subGroup})">
     Sure?Sure?Sure?Sure?Sure?
   </button>
-  <h3 class="article-sub-group__group-title" (click)="toggleGroup(subGroup)">
+  <h3 class="article-sub-group__group-title" (click)="toggleSubGroup()">
     {{ subGroup.subGroup }}
   </h3>
   <div *ngIf="isSubGroupVisible(subGroup)" class="article-sub-group__group-list">

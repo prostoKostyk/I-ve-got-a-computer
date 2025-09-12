@@ -8,16 +8,21 @@ import {NOT_DELETED_SECTIONS} from "../../../../../constants/constants";
   styleUrl: './article-group.component.less'
 })
 export class ArticleGroupComponent {
-  @Input() group: Group;
-  @Input() availableGroups: Group[];
-  @Input() articles: Article[];
-  @Output() groupDeleted = new EventEmitter<DeleteGroupInput>();
-  @Output() articleDeleted = new EventEmitter<Article>();
-  @Output() articleUpdated = new EventEmitter<Article>();
-  visibleGroups: { [key: string]: boolean } = {};
-  sureButtonsArray: boolean[] = [false, false, false, false];
+  @Input()
+  group: Group;
+  @Input()
+  availableGroups: Group[];
+  @Input()
+  articles: Article[];
+  @Output()
+  groupDeleted = new EventEmitter<DeleteGroupInput>();
+  @Output()
+  articleDeleted = new EventEmitter<Article>();
+  @Output()
+  articleUpdated = new EventEmitter<Article>();
+  protected sureButtonsArray: boolean[] = [false, false, false, false];
 
-  toggleGroup(group: Group) {
+  toggleGroup() {
     this.group.open = !this.group.open;
   }
 
@@ -25,7 +30,7 @@ export class ArticleGroupComponent {
     return NOT_DELETED_SECTIONS.findIndex(s => s === this.group.group) === -1;
   }
 
-  isGroupVisible(group: Group): boolean {
+  isGroupVisible(): boolean {
     return Boolean(this.group.open);
   }
 

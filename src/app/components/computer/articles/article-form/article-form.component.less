@@ -2,11 +2,20 @@
   padding-bottom: 20px;
   position: relative;
   left: 5%;
-  width: fit-content;
+  width: 100%;
+  z-index: 100;
+  background-color: #0d1117;
 
   &__group {
     margin-bottom: 10px;
     margin-left: 8px;
+    display: flex;
+  }
+
+  &__group-title {
+    margin-bottom: 10px;
+    margin-left: 8px;
+    width: 35vw;
     display: flex;
   }
 
@@ -69,6 +78,8 @@
     margin-top: auto;
     margin-bottom: auto;
   }
+  &__textarea-controls {
+  }
 
   &__textarea-bold-controls-clicked {
     background-color: #3d444d;
@@ -80,20 +91,26 @@
   }
 
   &__input-url {
-    width: 6%;
-  }
-
-  &__input-url:focus {
     width: 30%;
   }
 
   &__textarea {
     border: 2px solid #44555D;
-    width: 60vw;
+    width: 40vw;
+    margin-left: 1vw;
     min-height: 15vh;
     padding: 5px 3rem 5px 16px;
     font-size: 1.2rem;
     line-height: 2.4rem;
+    white-space: pre-wrap;
+  }
+
+  &__checkbox {
+    margin-left: 1vw;
+  }
+
+  ::ng-deep &__checkbox .mdc-form-field {
+    color: #fff;
   }
 
   &__submit-button {
@@ -108,7 +125,7 @@
     height: 50px;
     border: 1px solid transparent;
     border-radius: .25rem;
-    margin-left: 20px;
+    margin-left: 2vw;
     padding: calc(.875rem - 1px) calc(1.5rem - 1px);
     width: auto;
   }

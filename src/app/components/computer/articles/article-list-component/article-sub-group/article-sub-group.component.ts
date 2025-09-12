@@ -11,54 +11,59 @@ import {forkJoin} from "rxjs";
   styleUrl: './article-sub-group.component.less'
 })
 export class ArticleSubGroupComponent {
-  @Input() subGroup: SubGroup;
-  @Input() availableGroups: Group[];
-  @Input() articles: Article[];
-  @Output() groupDeleted = new EventEmitter<{ group: Group | null, subGroup?: SubGroup }>();
-  @Output() articleDeleted = new EventEmitter<Article>();
-  @Output() articleUpdated = new EventEmitter<Article>();
-  visibleGroups: { [key: string]: boolean } = {};
-  sureButtonsArray: boolean[] = [false, false, false, false];
+  @Output()
+  groupDeleted = new EventEmitter<{ group: Group | null, subGroup?: SubGroup }>();
+  @Output()
+  articleDeleted = new EventEmitter<Article>();
+  @Output()
+  articleUpdated = new EventEmitter<Article>();
+  @Input()
+  subGroup: SubGroup;
+  @Input()
+  availableGroups: Group[];
+  @Input()
+  articles: Article[];
+  private visibleSubGroups: { [key: string]: boolean } = {};
+  protected sureButtonsArray: boolean[] = [false, false, false, false];
 
   constructor(private restApiService: RestApiService) {
   }
 
-  sortArticles() {
-    // @ts-ignore
+  private sortArticles() {
     this.subGroup.articles.sort((a, b) => a.order - b.order);
   }
 
-  toggleGroup(subGroup: SubGroup) {
-    this.visibleGroups[subGroup.subGroup] = !this.visibleGroups[subGroup.subGroup];
-    this.visibleGroups[subGroup.subGroup] && this.sortArticles();
+  toggleSubGroup() {
+    this.visibleSubGroups[this.subGroup.subGroup] = !this.visibleSubGroups[this.subGroup.subGroup];
+    this.visibleSubGroups[this.subGroup.subGroup] && this.sortArticles();
   }
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.subGroup.articles, event.previousIndex, event.currentIndex);
-    this.updateArticlesOrder();
     event.previousIndex !== event.currentIndex && this.updateArticlesOrderBackend(event.previousIndex, event.currentIndex)
   }
 
-  updateArticlesOrder(): void {
+  private updateArticlesOrder(): void {
     this.subGroup.articles.forEach((article, index) => {
       article.order = index + 1;
     });
   }
 
-  updateArticlesOrderBackend(previousIndex: number, currentIndex: number) {
+  private updateArticlesOrderBackend(previousIndex: number, currentIndex: number) {
     const updatedArticlePrevious = this.subGroup.articles[previousIndex];
     const updatedArticleCurrent = this.subGroup.articles[currentIndex];
     updatedArticlePrevious._id && updatedArticleCurrent._id && forkJoin(
-      this.restApiService.updateArticle(updatedArticlePrevious._id, updatedArticlePrevious),
-      this.restApiService.updateArticle(updatedArticleCurrent._id, updatedArticleCurrent),
+      this.restApiService.updateArticle(updatedArticlePrevious),
+      this.restApiService.updateArticle(updatedArticleCurrent),
     ).subscribe(([res1, res2]) => {
+      this.updateArticlesOrder();
       }, (error) => {
         console.error("Error updating article:", error);
       });
   }
 
   isSubGroupVisible(subGroup: SubGroup): boolean {
-    return this.visibleGroups[subGroup.subGroup];
+    return this.visibleSubGroups[subGroup.subGroup];
   }
 
   checkCanBeDeleted(): boolean {

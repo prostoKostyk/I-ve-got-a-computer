@@ -11,10 +11,10 @@
   <button class="article-group__group-delete" *ngIf="sureButtonsArray[3]" (click)="deleteGroup({group})">
     Sure?Sure?Sure?Sure?Sure?
   </button>
-  <h3 class="article-group__group-title" (click)="toggleGroup(group)">
+  <h3 class="article-group__group-title" (click)="toggleGroup()">
     {{ group.group }}
   </h3>
-  <div *ngIf="isGroupVisible(group)" class="article-group__group-list">
+  <div *ngIf="isGroupVisible()" class="article-group__group-list">
     <div *ngIf="group.subGroups[0].subGroup === 'empty'">
       @for (article of group.subGroups[0].articles; track article) {
         <app-article-item [article]="article" [availableGroups]="availableGroups"

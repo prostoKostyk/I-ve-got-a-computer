@@ -11,9 +11,9 @@ export class ArticleItemComponent {
   @Input() availableGroups: Group[];
   @Output() articleDeleted = new EventEmitter<Article>();
   @Output() articleUpdated = new EventEmitter<Article>();
-  sureButtonsArray: boolean[] = [false, false, false];
-  visibleArticles: { [key: string]: boolean } = {};
-  imageUrlsArray: string[] = [];
+  protected sureButtonsArray: boolean[] = [false, false, false];
+  private visibleArticles: { [key: string]: boolean } = {};
+  protected imageUrlsArray: string[] = [];
 
   constructor(private restApiService: RestApiService) {
   }
@@ -32,20 +32,20 @@ export class ArticleItemComponent {
     return this.visibleArticles[this.getArticleId(article)];
   }
 
-  getImagesArray() {
+  private getImagesArray() {
     this.imageUrlsArray = this.article.imageUrls?.split(",") || [];
   }
 
   updateArticle(article: Article) {
-    article.editing = false;
+    this.stopEdit(article);
     this.articleUpdated.emit(article);
   }
 
-  editArticleStart(article: Article) {
+  startEdit(article: Article) {
     article.editing = true;
   }
 
-  cancelEdit(article: Article) {
+  stopEdit(article: Article) {
     article.editing = false;
   }
 
@@ -55,7 +55,7 @@ export class ArticleItemComponent {
   }
 
   updateDoneField(event: MatCheckboxChange) {
-    this.article._id && this.restApiService.updateArticle(this.article._id, this.article).subscribe({
+    this.article._id && this.restApiService.updateArticle(this.article).subscribe({
       next: (s) => console.log(s),
       error: (err) => console.error("Error updating article:", err)
     });

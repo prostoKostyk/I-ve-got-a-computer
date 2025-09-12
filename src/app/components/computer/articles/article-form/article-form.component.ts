@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from "@angular/core";
-import {Article, Group, SubGroup} from "../../../../models/common";
+import {Article, createEmptyArticle, Group, SubGroup} from "../../../../models/common";
 
 @Component({
   selector: 'app-article-form',
@@ -7,13 +7,13 @@ import {Article, Group, SubGroup} from "../../../../models/common";
   styleUrl: './article-form.component.less'
 })
 
-export class ArticleFormComponent implements AfterViewInit  {
+export class ArticleFormComponent implements AfterViewInit, OnInit  {
   @Input() availableGroups: Group[];
   @Input() availableSubGroups: SubGroup[];
   @Output() articleAdded = new EventEmitter<Article>();
 
   formVisible: boolean;
-  newArticle: Article = { title: '', content: '', group: '', subGroup: '', order: 999999999999999, ignoreHtml: false};
+  newArticle: Article;
   newGroupName: string = '';
   newSubGroupName: string = '';
   filteredSubGroups: SubGroup[];
@@ -24,15 +24,19 @@ export class ArticleFormComponent implements AfterViewInit  {
   cursorPosition: number;
   selectionStart: number;
   selectionEnd: number;
-  selectedText: string;
+  // selectedText: string;
 
   @ViewChild('textarea') textarea: ElementRef;
 
-  ngAfterViewInit() {
-    this.updateCursorPosition(); // Вызывается при загрузке компонента для инициализации значения
+  ngOnInit() {
+    this.newArticle = createEmptyArticle();
   }
 
-  openForm() {
+  ngAfterViewInit() {
+    this.updateCursorPosition();
+  }
+
+  toggleForm() {
     this.formVisible = !this.formVisible;
   }
 
@@ -49,7 +53,7 @@ export class ArticleFormComponent implements AfterViewInit  {
     }
     this.newArticle.imageUrls = this.imageUrlString;
     this.articleAdded.emit(this.newArticle);
-    this.newArticle = { title: '', content: '', group: '', subGroup: '', imageUrls: "", order: 999999999999999, ignoreHtml: false};
+    this.newArticle = createEmptyArticle();
     this.imageUrlString = '';
     this.newGroupName = '';
     this.newSubGroupName = '';
@@ -67,18 +71,18 @@ export class ArticleFormComponent implements AfterViewInit  {
       const textarea = this.textarea.nativeElement;
       this.selectionStart = textarea.selectionStart;
       this.selectionEnd = textarea.selectionEnd;
-      this.selectedText = textarea.value.substring(this.selectionStart, this.selectionEnd);
+      // this.selectedText = textarea.value.substring(this.selectionStart, this.selectionEnd);
     } else {
       this.cursorPosition = this.newArticle.content.length - 1;
       this.selectionStart = -1;
       this.selectionEnd = -1;
-      this.selectedText = '';
+      // this.selectedText = '';
     }
   }
 
   insertBoldTag() {
     const currentInput = this.newArticle.content;
-    if (!this.isBoldText && this.selectionStart > -1 && this.selectionEnd) { // Вставка тегов вокруг выделленого текста
+    if (!this.isBoldText && this.selectionStart !== this.selectionEnd) { // Вставка тегов вокруг выделленого текста
       this.newArticle.content =
         currentInput.slice(0, this.selectionStart) + "<b>"
         + currentInput.slice(this.selectionStart, this.selectionEnd) + "</b>"

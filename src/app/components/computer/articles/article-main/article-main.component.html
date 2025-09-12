@@ -3,6 +3,6 @@
 <app-article-list-component class="article__title-form" [articles]="articles"
               [availableGroups]="availableGroups"
               (articleDeleted)="deleteArticle($event)"
-              (groupDeleted)="deleteGroup({group: $event.group, subGroup: $event.subGroup})"
+              (groupDeleted)="deleteGroupOrSubGroup({group: $event.group, subGroup: $event.subGroup})"
               (articleUpdated)="updateArticle($event)">
 </app-article-list-component>

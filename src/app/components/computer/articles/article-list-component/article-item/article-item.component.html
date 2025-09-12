@@ -1,6 +1,6 @@
 <div class="article">
   <div *ngIf="!article.editing; else editArticle">
-    <mat-checkbox class="article__title-checkbox" [(ngModel)]="article.done" (change)="updateDoneField($event)"></mat-checkbox>
+    <mat-checkbox class="article__title-checkbox" color="primary" [(ngModel)]="article.done" (change)="updateDoneField($event)"></mat-checkbox>
     <h4 class="article__title" cdkDrag (click)="toggleArticle(article)">{{ article.title + " " + article.order }}
     </h4>
     <div *ngIf="isArticleVisible(article)" class="article__content">
@@ -10,7 +10,7 @@
         <img *ngFor="let imageUrl of this.imageUrlsArray" [src]="imageUrl" alt="Изображение статьи"
              class="article__image">
       </div>
-      <button class="article__edit" (click)="editArticleStart(article)">Edit</button>
+      <button class="article__edit" (click)="startEdit(article)">Edit</button>
       <button class="article__delete" (click)="sureButtonsArray[0]=true">Delete</button>
       <button class="article__delete" *ngIf="sureButtonsArray[0]" (click)="sureButtonsArray[1]=true">Sure?</button>
       <button class="article__delete" *ngIf="sureButtonsArray[1]" (click)="deleteArticle(article)">Sure?Sure
@@ -42,6 +42,6 @@
       <input type="text" [(ngModel)]="article.imageUrls" class="article__edit-input"/>
     </div>
     <button class="article__edit-save" (click)="updateArticle(article)">Сохранить</button>
-    <button class="article__edit-cancel" (click)="cancelEdit(article)">Отмена</button>
+    <button class="article__edit-cancel" (click)="stopEdit(article)">Отмена</button>
   </div>
 </ng-template>

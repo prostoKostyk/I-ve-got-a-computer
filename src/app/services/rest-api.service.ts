@@ -71,8 +71,8 @@ export class RestApiService {
     return this.httpClient.delete(url, { headers: this.initHeaders() });
   }
 
-  public updateArticle(articleId: string, article: Article): Observable<any> {
-    const url = `${this.apiUrl}${this.articlesUrl}/${articleId}`;
+  public updateArticle(article: Article): Observable<any> {
+    const url = `${this.apiUrl}${this.articlesUrl}/${article._id}`;
     return this.httpClient.put(url, article, { headers: this.initHeaders() });
   }
 }

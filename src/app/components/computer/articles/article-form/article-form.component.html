@@ -22,9 +22,9 @@
            class="article-form__input"/>
   </div>
   <div class="article-form__group">
-    <input placeholder="Заголовок" type="text" [(ngModel)]="newArticle.title" class="article-form__input"/>
+    <input class="article-form__input article-form__group-title" placeholder="Заголовок" type="text" [(ngModel)]="newArticle.title"/>
   </div>
-  <div class="article-form__group">
+  <div class="article-form__group article-form__textarea-controls">
     <button class="article-form__textarea-controls-bold-button"
             [ngClass]="{'article-form__textarea-bold-controls-clicked': isBoldText }" type="button"
             (click)="insertBoldTag()">
@@ -42,13 +42,15 @@
               class="article-form__textarea"
               cdkTextareaAutosize
               placeholder="Содержание"
-              [(ngModel)]="newArticle.content" (input)="updateCursorPosition()"
-              (click)="updateCursorPosition()" (keyup)="updateCursorPosition()" (keydown)="updateCursorPosition()"></textarea>
+              [(ngModel)]="newArticle.content"
+              (input)="updateCursorPosition()"
+              (click)="updateCursorPosition()"
+              (keyup)="updateCursorPosition()">
+    </textarea>
+    <div *ngIf="!newArticle.ignoreHtml" class="article-form__textarea" [innerHTML]="newArticle.content | safehtml"></div>
+    <div *ngIf="newArticle.ignoreHtml" class="article-form__textarea">{{ newArticle.content }}</div>
   </div>
-  <div class="article-form__group">
-    <label class="article-form__label">URL картинки (через запятые):</label>
-    <input type="text" [(ngModel)]="imageUrlString" class="article-form__input"/>
-  </div>
-  <button class="article-form__submit-button" (click)="addArticle()">Добавить</button>
+  <mat-checkbox class="article-form__checkbox" color="primary" [(ngModel)]="newArticle.ignoreHtml">Don't parse HTML</mat-checkbox>
+  <p><button class="article-form__submit-button" (click)="addArticle()">Добавить</button></p>
 </div>
-<button class="article-form__submit-button form-open-button" [ngClass]="{'background-blue': formVisible}" (click)="openForm()">{{formVisible ? 'X' : '+' }}</button>
+<button class="article-form__submit-button form-open-button" [ngClass]="{'background-blue': formVisible}" (click)="toggleForm()">{{formVisible ? 'X' : '+' }}</button>

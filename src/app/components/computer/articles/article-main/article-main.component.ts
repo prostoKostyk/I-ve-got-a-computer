@@ -6,9 +6,9 @@ import {Article, DeleteGroupInput, Group, SubGroup} from "../../../../models/com
   selector: "app-article-main", templateUrl: "./article-main.component.html", styleUrl: "./article-main.component.less"
 })
 export class ArticleMainComponent implements OnInit {
-  articles: Article[] = [];
-  availableGroups: Group[] = [];
-  availableSubGroups: SubGroup[] = [];
+  protected articles: Article[] = [];
+  protected availableGroups: Group[] = [];
+  protected availableSubGroups: SubGroup[] = [];
   @Output() openDesktop = new EventEmitter<boolean>();
 
   constructor(private restApiService: RestApiService) {
@@ -18,7 +18,7 @@ export class ArticleMainComponent implements OnInit {
     this.loadArticles();
   }
 
-  loadArticles() {
+  private loadArticles() {
     this.restApiService.getArticles<Article[]>().subscribe((articles) => {
       this.articles = articles;
       this.availableGroups = [];
@@ -29,13 +29,17 @@ export class ArticleMainComponent implements OnInit {
     });
   }
 
-  setArticlesByGroups() {
+  private setArticlesByGroups() {
     this.articles.forEach(a => {
       const subGroupIndex = this.availableSubGroups.findIndex(g => a.subGroup === g.subGroup);
       if (subGroupIndex > -1) {
         this.availableSubGroups[subGroupIndex].articles.push(a);
       } else {
-        this.availableSubGroups.push({subGroup: a.subGroup, parentGroup: a.group, articles: [a],});
+        this.availableSubGroups.push({
+            subGroup: a.subGroup,
+            parentGroup: a.group,
+            articles: [a]
+          });
       }
     })
     this.availableSubGroups.forEach(subG => {
@@ -57,16 +61,15 @@ export class ArticleMainComponent implements OnInit {
         indexOfGroup = this.availableGroups.length - 1;
       }
 
-      const newSubGroup: SubGroup = {
-        subGroup: newArticle.subGroup,
-        articles: [newArticle],
-        parentGroup: newArticle.group
-      };
       const indexOfSubGroupInGroups = this.availableGroups[indexOfGroup].subGroups.findIndex(sg => sg.subGroup === newArticle.subGroup);
       if (indexOfSubGroupInGroups > -1) {
         this.availableGroups[indexOfGroup].subGroups[indexOfSubGroupInGroups].articles.push(newArticle);
       } else {
-        this.availableGroups[indexOfGroup].subGroups.push(newSubGroup)
+        this.availableGroups[indexOfGroup].subGroups.push({
+          subGroup: newArticle.subGroup,
+          articles: [newArticle],
+          parentGroup: newArticle.group
+        });
       }
     }, (error) => {
       console.error("Error adding article:", error);
@@ -74,7 +77,7 @@ export class ArticleMainComponent implements OnInit {
   }
 
   updateArticle(updatedArticle: Article) {
-    updatedArticle._id && this.restApiService.updateArticle(updatedArticle._id, updatedArticle).subscribe(() => {
+    updatedArticle._id && this.restApiService.updateArticle(updatedArticle).subscribe(() => {
       const index = this.articles.findIndex(a => a._id === updatedArticle._id);
       if (index > -1) {
         this.articles[index] = updatedArticle;
@@ -92,15 +95,15 @@ export class ArticleMainComponent implements OnInit {
     });
   }
 
-  deleteGroup(d: DeleteGroupInput) {
-    const flag = false;
-    // 1. Delete articles in group on the server
+  /**
+   * Deleting groups or subGroups
+   */
+  deleteGroupOrSubGroup(d: DeleteGroupInput) {
     const articlesInGroup = d.subGroup ?
       this.articles.filter(article => article.subGroup === d.subGroup?.subGroup) :
       this.articles.filter(article => article.group === d.group?.group);
     articlesInGroup.forEach((article, index) => {
       article._id && this.restApiService.deleteArticle(article._id).subscribe(() => {
-        //2.  Remove the articles for the group from the local articles array`
         index === articlesInGroup.length - 1 && this.loadArticles();
       }, (error) => {
         console.error("Error deleting article:", error);
