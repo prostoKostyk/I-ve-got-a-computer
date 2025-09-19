@@ -35,10 +35,6 @@ export interface Article {
   done?: boolean;
 }
 
-export function createEmptyArticle(): Article {
-  return { title: '', content: '', group: '', subGroup: '', order: 999999999999999, ignoreHtml: false}
-}
-
 export interface Group {
   subGroups: SubGroup[];
   group: string;

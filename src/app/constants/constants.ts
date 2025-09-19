@@ -26,13 +26,17 @@ export enum APP_CONDITION {
   COMPUTER_OPENED_ARTICLES = "2a1",
 }
 
-export enum ARTICLE_FORM_FIELDS {
-  GROUP = "group",
-  SUB_GROUP = "subGroup",
+export enum ArticleFormFields {
+  NEW_GROUP = "newGroup",
+  NEW_SUB_GROUP = "newSubGroup",
+  SELECTED_GROUP = "selectedGroup",
+  SELECTED_SUB_GROUP = "selectedSubGroup",
+  TITLE = "title",
+  IMAGE_URL = "imageUrl",
   CONTENT = "content",
+  IGNORE_HTML = "ignoreHtml",
 }
 
 export const NOT_DELETED_SECTIONS = ["Angular", "CSS"];
 export const NOT_DELETED_SUBSECTIONS = ["Angular basic", "CSS Basic"];
-
 

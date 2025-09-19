@@ -22,6 +22,8 @@ export class ArticleSubGroupComponent {
   @Input()
   availableGroups: Group[];
   @Input()
+  availableSubGroups: SubGroup[];
+  @Input()
   articles: Article[];
   private visibleSubGroups: { [key: string]: boolean } = {};
   protected sureButtonsArray: boolean[] = [false, false, false, false];

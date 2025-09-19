@@ -1,28 +1,30 @@
-<div class="article-form" *ngIf="formVisible">
+<form [formGroup]="group" class="article-form" *ngIf="formVisible">
   <div class="article-form__group">
     <label class="article-form__label">Section</label>
-    <select [(ngModel)]="newArticle.group" (change)="filterSubGroups()" class="article-form__select">
-      <option *ngFor="let group of availableGroups" [value]="group.group"
-              class="article-form__option">{{ group.group }}
+    <select [formControlName]="FIELDS.SELECTED_GROUP" (change)="onSelectedGroupChange()" class="article-form__select">
+      <option class="article-form__option" value="" [defaultSelected]=true>New section</option>
+      <option class="article-form__option" *ngFor="let group of availableGroups" [value]="group.group">
+        {{ group.group }}
       </option>
-      <option value="" class="article-form__option">New section</option>
     </select>
-    <input class="article-form__input" *ngIf="newArticle.group === ''" type="text" [(ngModel)]="newGroupName"
+    <input class="article-form__input" [formControlName]="FIELDS.NEW_GROUP"
+           *ngIf="selectedGroupFormControl.value === ''" type="text"
            placeholder="Section"/>
   </div>
   <div class="article-form__group">
     <label class="article-form__label">Subsection</label>
-    <select [(ngModel)]="newArticle.subGroup" class="article-form__select">
-      <option *ngFor="let subGroup of filteredSubGroups" [value]="subGroup.subGroup"
-              class="article-form__option">{{ subGroup.subGroup }}
+    <select class="article-form__select" [formControlName]="FIELDS.SELECTED_SUB_GROUP">
+      <option class="article-form__option" value="" [defaultSelected]=true>New subsection</option>
+      <option class="article-form__option" *ngFor="let subGroup of filteredSubGroups" [value]="subGroup.subGroup">
+        {{ subGroup.subGroup }}
       </option>
-      <option value="" class="article-form__option">New subsection</option>
     </select>
-    <input *ngIf="newArticle.subGroup === ''" type="text" [(ngModel)]="newSubGroupName" placeholder="Subsection"
-           class="article-form__input"/>
+    <input class="article-form__input" *ngIf="selectedSubGroupFormControl.value === ''"
+           [formControlName]="FIELDS.NEW_SUB_GROUP" type="text" placeholder="Subsection"/>
   </div>
   <div class="article-form__group">
-    <input class="article-form__input article-form__group-title" placeholder="Заголовок" type="text" [(ngModel)]="newArticle.title"/>
+    <input class="article-form__input article-form__group-title" [formControlName]="FIELDS.TITLE"
+           placeholder="Заголовок" type="text"/>
   </div>
   <div class="article-form__group article-form__textarea-controls">
     <button class="article-form__textarea-controls-bold-button"
@@ -30,7 +32,8 @@
             (click)="insertBoldTag()">
       <b>B</b>
     </button>
-      <input type="text" placeholder="URL картинки" [(ngModel)]="imageUrlInput" class="article-form__input article-form__input-url"/>
+    <input class="article-form__input article-form__input-url" [formControlName]="FIELDS.IMAGE_URL" type="text"
+           placeholder="URL картинки"/>
     <button class="article-form__textarea-controls-button"
             type="button"
             (click)="insertIMG()">
@@ -40,17 +43,26 @@
   <div class="article-form__group">
     <textarea #textarea
               class="article-form__textarea"
+              [formControlName]="FIELDS.CONTENT"
               cdkTextareaAutosize
               placeholder="Содержание"
-              [(ngModel)]="newArticle.content"
               (input)="updateCursorPosition()"
               (click)="updateCursorPosition()"
               (keyup)="updateCursorPosition()">
     </textarea>
-    <div *ngIf="!newArticle.ignoreHtml" class="article-form__textarea" [innerHTML]="newArticle.content | safehtml"></div>
-    <div *ngIf="newArticle.ignoreHtml" class="article-form__textarea">{{ newArticle.content }}</div>
+    <div *ngIf="!ignoreHtmlFormControl.value" class="article-form__textarea"
+         [innerHTML]="contentFormControl.value | safehtml"></div>
+    <div *ngIf="ignoreHtmlFormControl.value" class="article-form__textarea">{{ contentFormControl.value  }}</div>
   </div>
-  <mat-checkbox class="article-form__checkbox" color="primary" [(ngModel)]="newArticle.ignoreHtml">Don't parse HTML</mat-checkbox>
-  <p><button class="article-form__submit-button" (click)="addArticle()">Добавить</button></p>
-</div>
-<button class="article-form__submit-button form-open-button" [ngClass]="{'background-blue': formVisible}" (click)="toggleForm()">{{formVisible ? 'X' : '+' }}</button>
+  <mat-checkbox class="article-form__checkbox" color="primary" [formControlName]="FIELDS.IGNORE_HTML">Don't parse HTML
+  </mat-checkbox>
+  <p>
+    <button class="article-form__submit-button" *ngIf="!isEditMode" (click)="addArticle()">Добавить</button>
+  </p>
+  <p>
+    <button class="article-form__submit-button" *ngIf="isEditMode" (click)="addArticle()">Обновить</button>
+  </p>
+</form>
+<button class="article-form__submit-button form-open-button" [ngClass]="{'background-blue': formVisible}"
+        (click)="toggleForm()">{{ formVisible ? 'X' : '+' }}
+</button>

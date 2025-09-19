@@ -13,6 +13,8 @@ export class ArticleGroupComponent {
   @Input()
   availableGroups: Group[];
   @Input()
+  availableSubGroups: SubGroup[];
+  @Input()
   articles: Article[];
   @Output()
   groupDeleted = new EventEmitter<DeleteGroupInput>();

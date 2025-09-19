@@ -9,6 +9,7 @@ import {Article, DeleteGroupInput, Group, SubGroup} from "../../../../models/com
 export class ArticleListComponentComponent {
   @Input() articles: Article[];
   @Input() availableGroups: Group[];
+  @Input() availableSubGroups: SubGroup[];
   @Output() articleDeleted = new EventEmitter<Article>();
   @Output() groupDeleted = new EventEmitter<DeleteGroupInput>();
   @Output() articleUpdated = new EventEmitter<Article>();

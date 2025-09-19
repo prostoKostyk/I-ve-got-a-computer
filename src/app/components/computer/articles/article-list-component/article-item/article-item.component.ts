@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {Article, Group} from "../../../../../models/common";
+import {Article, Group, SubGroup} from "../../../../../models/common";
 import {MatCheckboxChange} from "@angular/material/checkbox";
 import {RestApiService} from "../../../../../services/rest-api.service";
 
@@ -9,6 +9,7 @@ import {RestApiService} from "../../../../../services/rest-api.service";
 export class ArticleItemComponent {
   @Input() article: Article;
   @Input() availableGroups: Group[];
+  @Input() availableSubGroups: SubGroup[];
   @Output() articleDeleted = new EventEmitter<Article>();
   @Output() articleUpdated = new EventEmitter<Article>();
   protected sureButtonsArray: boolean[] = [false, false, false];
@@ -36,9 +37,8 @@ export class ArticleItemComponent {
     this.imageUrlsArray = this.article.imageUrls?.split(",") || [];
   }
 
-  updateArticle(article: Article) {
-    this.stopEdit(article);
-    this.articleUpdated.emit(article);
+  setArticle(article: Article) {
+    this.article = article;
   }
 
   startEdit(article: Article) {
