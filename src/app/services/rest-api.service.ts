@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Article, User} from "../models/common";
+import {Article, HarmonicaNotes, User} from "../models/common";
 
 @Injectable({
   providedIn: "root"
@@ -13,6 +13,7 @@ export class RestApiService {
   private usersUrl = "/rest/gameusers"
   private articlesUrl = "/rest/articles";
   private articlesUrlWithMeta = "/rest/articles?metafields=true";
+  private harmonicaNotesUrl = "/rest/harmonica-notes  ";
   constructor(private httpClient: HttpClient) {
   }
 
@@ -58,6 +59,7 @@ export class RestApiService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
+
   public getArticles<T>(): Observable<T> {
     return this.httpClient.get<T>(this.apiUrl + this.articlesUrlWithMeta, { headers: this.initHeaders() });
   }
@@ -74,5 +76,23 @@ export class RestApiService {
   public updateArticle(article: Article): Observable<any> {
     const url = `${this.apiUrl}${this.articlesUrl}/${article._id}`;
     return this.httpClient.put(url, article, { headers: this.initHeaders() });
+  }
+
+  public getHarmonicaNotes<T>(): Observable<T> {
+    return this.httpClient.get<T>(this.apiUrl + this.harmonicaNotesUrl, { headers: this.initHeaders() });
+  }
+
+  public addHarmonicaNotes(harmonicaNotes: HarmonicaNotes): Observable<HarmonicaNotes> {
+    return this.httpClient.post<HarmonicaNotes>(this.apiUrl + this.harmonicaNotesUrl, harmonicaNotes, { headers: this.initHeaders() });
+  }
+
+  public deleteHarmonicaNotes(harmonicaNotesId: string): Observable<any> {
+    const url = `${this.apiUrl}${this.harmonicaNotesUrl}/${harmonicaNotesId}`;
+    return this.httpClient.delete(url, { headers: this.initHeaders() });
+  }
+
+  public updateHarmonicaNotes(harmonicaNotes: HarmonicaNotes): Observable<any> {
+    const url = `${this.apiUrl}${this.harmonicaNotesUrl}/${harmonicaNotes._id}`;
+    return this.httpClient.put(url, harmonicaNotes, { headers: this.initHeaders() });
   }
 }

@@ -1,0 +1,119 @@
+.harmonica {
+  background-color: #212121;
+
+  &__input-container {
+    width: 45vw;
+    margin-left: 1vw;
+  }
+
+  &__top {
+    display: grid;
+    grid-template-columns: 55vw 45vw;
+  }
+
+  &__container {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    width: 40vw;
+    float: right;
+  }
+
+  &__container-harmonica {
+    width: 35vw;
+  }
+
+  &__goback {
+    cursor: pointer;
+    width: max-content;
+  }
+
+  &__textarea {
+    width: 30vw;
+    height: 25vh;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 3rem 5px 16px;
+    font-size: 1.2rem;
+    line-height: 2.4rem;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  &__body {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    background-color: #7b747c;
+    margin-left: 1vw;
+    width: 30vw;
+  }
+
+  &__notes-image {
+    margin-top: 1vh;
+    margin-left: 1vw;
+    width: 30vw;
+  }
+
+  &__body-hole {
+    text-align: center;
+    cursor: pointer;
+    background-color: #022F77;
+    color: white;
+  }
+
+  &__body-note {
+    text-align: center;
+    cursor: pointer;
+    background-color: #7b747c;
+    color: #022F77;
+  }
+
+  &__body-note_empty {
+    text-align: center;
+    background-color: whitesmoke;
+    color: black;
+  }
+
+  &__button {
+    background-color: #022F77;
+    color: #ffffff;
+    box-shadow: 0 1px 1px 0 #01040999, 0 1px 3px 0 #01040999;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 1rem;
+    min-height: 2rem;
+    cursor: pointer;
+    height: 50px;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    width: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  &__button-notes-mode {
+    background-color: #022F77;
+    margin-top: 15%;
+    color: #ffffff;
+    box-shadow: 0 1px 1px 0 #01040999, 0 1px 3px 0 #01040999;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 1rem;
+    min-height: 2rem;
+    cursor: pointer;
+    height: 50px;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    width: auto;
+  }
+
+  &__tabs {
+    white-space: pre-wrap;
+    width: 50vw;
+  }
+}
+
+.margin-bottom-15 {
+  margin-bottom: 15%;
+}

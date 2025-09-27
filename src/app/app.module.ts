@@ -23,9 +23,10 @@ import { ArticleSubGroupComponent } from './components/computer/articles/article
 import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
 import {SafeHtmlPipe} from "./pipes/safehtml.pipe";
 import {MatCheckbox} from "@angular/material/checkbox";
+import { HarmonicaComponent } from './components/computer/harmonica/harmonica.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, GameComponent, ComputerComponent, ArticleListComponentComponent, ArticleFormComponent, ArticleMainComponent, DesktopComponent, ArticleGroupComponent, ArticleItemComponent, ArticleSubGroupComponent],
+  declarations: [AppComponent, LoginComponent, GameComponent, ComputerComponent, ArticleListComponentComponent, ArticleFormComponent, ArticleMainComponent, DesktopComponent, ArticleGroupComponent, ArticleItemComponent, ArticleSubGroupComponent, HarmonicaComponent],
     imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, NgOptimizedImage, CdkTextareaAutosize, CdkDropList, CdkDrag, SafeHtmlPipe, ReactiveFormsModule, MatCheckbox,],
   providers: [{
     provide: CURRENT_LEVEL,

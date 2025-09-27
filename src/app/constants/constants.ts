@@ -24,6 +24,7 @@ export enum APP_CONDITION {
   GAME = "1a",
   COMPUTER_OPENED = "2a",
   COMPUTER_OPENED_ARTICLES = "2a1",
+  COMPUTER_OPENED_HARMONICA = "2a2",
 }
 
 export enum ArticleFormFields {

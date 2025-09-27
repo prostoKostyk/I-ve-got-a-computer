@@ -51,3 +51,8 @@ export interface DeleteGroupInput {
   group: Group | null,
   subGroup?: SubGroup
 }
+
+export interface HarmonicaNotes {
+  _id?: string,
+  tabs: string
+}
