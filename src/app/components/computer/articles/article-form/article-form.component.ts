@@ -95,6 +95,11 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.formVisible = this.isEditMode;
+    this.initGroup();
+    this.isEditMode && this.onSelectedGroupChange();
+  }
+
+  initGroup() {
     this.group = this.formBuilder.group({
       [ArticleFormFields.SELECTED_GROUP]: this.formBuilder.control(this.article?.group ?? "", [Validators.required]),
       [ArticleFormFields.SELECTED_SUB_GROUP]: this.formBuilder.control(this.article?.subGroup ?? "", [Validators.required]),
@@ -105,7 +110,6 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
       [ArticleFormFields.CONTENT]: this.formBuilder.control(this.article?.content ?? "", [Validators.required]),
       [ArticleFormFields.IGNORE_HTML]: this.formBuilder.control(this.article?.ignoreHtml, [Validators.required]),
     });
-    this.isEditMode && this.onSelectedGroupChange();
   }
 
   ngAfterViewInit() {
@@ -117,7 +121,7 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
   }
 
   addArticle() {
-    const newArticle = {title: "", content: "", group: "", subGroup: "", order: 999999999999999, ignoreHtml: false, _id: ""};
+    const newArticle = {title: "", content: "", group: "", subGroup: "", order: 999999999999999, ignoreHtml: false};
     if (this.selectedGroupFormControl.value === "" && this.newGroupFormControl.value) {
       newArticle.group = this.newGroupFormControl.value;
     } else {
@@ -138,6 +142,7 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
       this.updateArticle(newArticle);
     } else {
       this.articleAdded.emit(newArticle);
+      this.initGroup();
     }
     this.isBoldText = false;
   }

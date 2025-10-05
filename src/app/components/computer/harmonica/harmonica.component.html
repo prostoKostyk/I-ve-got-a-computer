@@ -1,12 +1,16 @@
 <div class="harmonica">
   <h1 class="harmonica__goback" (click)="openDesktopEmit()">Go Back</h1>
-  <div class="harmonica__top">
+  <div class="harmonica__top" *ngIf="formVisible">
     <div class="harmonica__input-container">
-      <textarea class="harmonica__textarea" [(ngModel)]="currentInput"></textarea>
-      <p><button class="harmonica__button" (click)="addNotes()">Добавить</button></p>
+      <input class="harmonica__input" [(ngModel)]="newNotes.title">
+      <textarea class="harmonica__textarea" [(ngModel)]="newNotes.tabs"></textarea>
+      <p>
+        <button class="harmonica__button" (click)="addNotes()">Добавить</button>
+      </p>
     </div>
     <div class="harmonica__container">
-      <button class="harmonica__button-notes-mode" (click)="isEngNotes = !isEngNotes">{{ isEngNotes ? 'ДоРеМи' : 'C D E' }}
+      <button class="harmonica__button-notes-mode"
+              (click)="isEngNotes = !isEngNotes">{{ isEngNotes ? 'ДоРеМи' : 'C D E' }}
       </button>
       <div class="harmonica__container-harmonica">
         <img class="harmonica__notes-image" src="assets/blow_notes.png" alt="blow notes">
@@ -29,6 +33,15 @@
       </div>
     </div>
   </div>
-  <div class="harmonica__tabs" *ngFor="let note of notes">{{ note.tabs }}</div>
+  <p>
+    <button class="harmonica__button harmonica__button-toggle" (click)="toggleForm()">{{ formVisible ? 'X' : '+' }}
+    </button>
+  </p>
+  <div class="harmonica__tabs">
+    <div class="harmonica__tabs-item" *ngFor="let note of notes">
+      <h3>{{ note.title }}</h3>
+      <div>{{ note.tabs }}</div>
+    </div>
+  </div>
 </div>
 

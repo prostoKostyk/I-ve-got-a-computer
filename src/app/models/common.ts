@@ -54,5 +54,6 @@ export interface DeleteGroupInput {
 
 export interface HarmonicaNotes {
   _id?: string,
-  tabs: string
+  tabs: string,
+  title?: string
 }

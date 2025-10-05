@@ -1,6 +1,16 @@
 .harmonica {
   background-color: #212121;
 
+  &__input {
+    border: none;
+    border-radius: 100px;
+    padding: 5px 3rem 5px 16px;
+    width: 20vw;
+    font-size: 1.2rem;
+    line-height: 2.4rem;
+    margin-bottom: 1vh;
+  }
+
   &__input-container {
     width: 45vw;
     margin-left: 1vw;
@@ -9,6 +19,7 @@
   &__top {
     display: grid;
     grid-template-columns: 55vw 45vw;
+    height: auto;
   }
 
   &__container {
@@ -91,6 +102,10 @@
     margin-bottom: auto;
   }
 
+  &__button-toggle {
+    margin-left: 1vw;
+  }
+
   &__button-notes-mode {
     background-color: #022F77;
     margin-top: 15%;
@@ -109,8 +124,20 @@
   }
 
   &__tabs {
+    display: grid;
+    grid-template-columns: 24vw 24vw 24vw 24vw;
     white-space: pre-wrap;
-    width: 50vw;
+  }
+
+  &__tabs-item {
+    border: 1px solid rgb(95,99,104);
+    border-radius: 8px;
+    margin: 16px;
+    padding: 16px;
+    text-align: center;
+    max-height: 50vh;
+    overflow: auto;
+    font-size: 1rem;
   }
 }
 

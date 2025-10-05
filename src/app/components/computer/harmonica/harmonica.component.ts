@@ -15,6 +15,8 @@ export class HarmonicaComponent implements OnInit {
   drawNotesRus: Array<string> = ["Ре", "Соль", "Си", "Ре", "Фа", "Ля", "Си", "Ре", "Фа", "Ля"];
   isEngNotes: boolean = true;
   currentInput: string;
+  newNotes: HarmonicaNotes = {tabs: ""};
+  formVisible: boolean;
 
   notes: Array<HarmonicaNotes> = [];
 
@@ -40,11 +42,16 @@ export class HarmonicaComponent implements OnInit {
   }
 
   addNotes() {
-    const notes = {tabs: this.currentInput}
-    this.restApiService.addHarmonicaNotes(notes).subscribe((notes) => {
+    this.restApiService.addHarmonicaNotes(this.newNotes).subscribe((notes) => {
       this.notes.push(notes);
+      this.newNotes.tabs = "";
+      this.newNotes.title = "";
     }, (error) => {
       console.error("Error adding article:", error);
     });
+  }
+
+  toggleForm() {
+    this.formVisible = !this.formVisible;
   }
 }
