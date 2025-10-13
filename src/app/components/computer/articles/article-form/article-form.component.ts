@@ -183,11 +183,11 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
     }
   }
 
-  insertBoldTag() {
+  insertTag(openTag: string, closeTag: string) {
     const currentInput = this.contentFormControl.value;
     if (!this.isBoldText && this.selectionStart !== this.selectionEnd) { // Вставка тегов вокруг выделленого текста
-      this.contentFormControl.patchValue(currentInput.slice(0, this.selectionStart) + "<b>"
-        + currentInput.slice(this.selectionStart, this.selectionEnd) + "</b>"
+      this.contentFormControl.patchValue(currentInput.slice(0, this.selectionStart) + openTag
+        + currentInput.slice(this.selectionStart, this.selectionEnd) + closeTag
         + currentInput.slice(this.selectionEnd));
       return;
     }
