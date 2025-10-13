@@ -29,8 +29,13 @@
   <div class="article-form__group article-form__textarea-controls">
     <button class="article-form__textarea-controls-bold-button"
             [ngClass]="{'article-form__textarea-bold-controls-clicked': isBoldText }" type="button"
-            (click)="insertBoldTag()">
+            (click)="insertTag('<b>', '</b>')">
       <b>B</b>
+    </button>
+    <button class="article-form__textarea-controls-code-button"
+            [ngClass]="{'article-form__textarea-bold-controls-clicked': isBoldText }" type="button"
+            (click)="insertTag('<pre><code>', '</code></pre>')">
+      <b>Code</b>
     </button>
     <input class="article-form__input article-form__input-url" [formControlName]="FIELDS.IMAGE_URL" type="text"
            placeholder="URL картинки"/>
