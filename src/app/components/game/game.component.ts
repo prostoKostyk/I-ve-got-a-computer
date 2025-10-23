@@ -28,8 +28,8 @@ export class GameComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.appCondition = localStorage.getItem("c") as unknown as APP_CONDITION;
     if (!this.appCondition) {
-      localStorage.setItem("c", APP_CONDITION.GAME);
-      this.appCondition = APP_CONDITION.GAME;
+      localStorage.setItem("c", APP_CONDITION.COMPUTER_OPENED_ARTICLES);
+      this.appCondition = APP_CONDITION.COMPUTER_OPENED_ARTICLES;
     }
     this.canvas.nativeElement.width = this.width;
     this.canvas.nativeElement.height = this.height;
