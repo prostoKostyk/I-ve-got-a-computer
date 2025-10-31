@@ -14,15 +14,16 @@ export class RestApiService {
   private articlesUrl = "/rest/articles";
   private articlesUrlWithMeta = "/rest/articles?metafields=true";
   private harmonicaNotesUrl = "/rest/harmonica-notes  ";
+
   constructor(private httpClient: HttpClient) {
   }
 
   public getUsers<T>(): Observable<T> {
-    return this.httpClient.get<T>(this.apiUrl + this.usersUrl, { headers: this.initHeaders() });
+    return this.httpClient.get<T>(this.apiUrl + this.usersUrl, {headers: this.initHeaders()});
   }
 
   public addUser(user: User): Observable<User> {
-    return this.httpClient.post<User>(this.apiUrl + this.usersUrl, user, { headers: this.initHeaders() })
+    return this.httpClient.post<User>(this.apiUrl + this.usersUrl, user, {headers: this.initHeaders()})
   }
 
   private initHeaders(): HttpHeaders {
@@ -30,11 +31,11 @@ export class RestApiService {
   }
 
   registerUser(userName: string): Observable<any> {
-    return this.httpClient.post<any>("https://users-93fb.restdb.io/views/api/register", { name: userName }, { headers: this.initHeaders() });
+    return this.httpClient.post<any>("https://users-93fb.restdb.io/views/api/register", {name: userName}, {headers: this.initHeaders()});
   }
 
   loginUser(userName: string): Observable<any> {
-    return this.httpClient.post<any>(`${this.apiUrl}/api/loginUser`, { name: userName }, { headers: this.initHeaders() });
+    return this.httpClient.post<any>(`${this.apiUrl}/api/loginUser`, {name: userName}, {headers: this.initHeaders()});
   }
 
   getToken(): string | null {
@@ -49,10 +50,11 @@ export class RestApiService {
     localStorage.removeItem('authToken');
   }
 
-  getUserName(): string | null{
+  getUserName(): string | null {
     return localStorage.getItem('userName');
   }
-  setUserName(userName: string): void{
+
+  setUserName(userName: string): void {
     localStorage.setItem('userName', userName);
   }
 
@@ -61,38 +63,38 @@ export class RestApiService {
   }
 
   public getArticles<T>(): Observable<T> {
-    return this.httpClient.get<T>(this.apiUrl + this.articlesUrlWithMeta, { headers: this.initHeaders() });
+    return this.httpClient.get<T>(this.apiUrl + this.articlesUrlWithMeta, {headers: this.initHeaders()});
   }
 
   public addArticle(article: Article): Observable<Article> {
-    return this.httpClient.post<Article>(this.apiUrl + this.articlesUrl, article, { headers: this.initHeaders() });
+    return this.httpClient.post<Article>(this.apiUrl + this.articlesUrl, article, {headers: this.initHeaders()});
   }
 
   public deleteArticle(articleId: string): Observable<any> {
     const url = `${this.apiUrl}${this.articlesUrl}/${articleId}`;
-    return this.httpClient.delete(url, { headers: this.initHeaders() });
+    return this.httpClient.delete(url, {headers: this.initHeaders()});
   }
 
   public updateArticle(article: Article): Observable<any> {
     const url = `${this.apiUrl}${this.articlesUrl}/${article._id}`;
-    return this.httpClient.put(url, article, { headers: this.initHeaders() });
+    return this.httpClient.put(url, article, {headers: this.initHeaders()});
   }
 
   public getHarmonicaNotes<T>(): Observable<T> {
-    return this.httpClient.get<T>(this.apiUrl + this.harmonicaNotesUrl, { headers: this.initHeaders() });
+    return this.httpClient.get<T>(this.apiUrl + this.harmonicaNotesUrl, {headers: this.initHeaders()});
   }
 
   public addHarmonicaNotes(harmonicaNotes: HarmonicaNotes): Observable<HarmonicaNotes> {
-    return this.httpClient.post<HarmonicaNotes>(this.apiUrl + this.harmonicaNotesUrl, harmonicaNotes, { headers: this.initHeaders() });
+    return this.httpClient.post<HarmonicaNotes>(this.apiUrl + this.harmonicaNotesUrl, harmonicaNotes, {headers: this.initHeaders()});
   }
 
   public deleteHarmonicaNotes(harmonicaNotesId: string): Observable<any> {
     const url = `${this.apiUrl}${this.harmonicaNotesUrl}/${harmonicaNotesId}`;
-    return this.httpClient.delete(url, { headers: this.initHeaders() });
+    return this.httpClient.delete(url, {headers: this.initHeaders()});
   }
 
   public updateHarmonicaNotes(harmonicaNotes: HarmonicaNotes): Observable<any> {
     const url = `${this.apiUrl}${this.harmonicaNotesUrl}/${harmonicaNotes._id}`;
-    return this.httpClient.put(url, harmonicaNotes, { headers: this.initHeaders() });
+    return this.httpClient.put(url, harmonicaNotes, {headers: this.initHeaders()});
   }
 }

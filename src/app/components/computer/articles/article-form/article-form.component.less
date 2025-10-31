@@ -2,7 +2,7 @@
   padding-bottom: 20px;
   position: relative;
   left: 5%;
-  width: 100%;
+  width: 95%;
   z-index: 100;
   background-color: #0d1117;
 
@@ -50,7 +50,9 @@
     background-color: #0d1117;
     z-index: 9999;
     margin-left: 1.2vw;
+    height: 55px;
   }
+
   &__textarea-controls-button {
     background-color: #238636;
     color: #ffffff;
@@ -120,6 +122,10 @@
     white-space: pre-wrap;
   }
 
+  &__textarea-edit {
+    width: 80vw;
+  }
+
   &__checkbox {
     margin-left: 1vw;
   }
@@ -144,11 +150,16 @@
     padding: calc(.875rem - 1px) calc(1.5rem - 1px);
     width: auto;
   }
+
+  &__submit-button-edit {
+    position: sticky;
+    bottom: 1%;
+    margin-left: -29%;
+  }
 }
 
 .form-open-button {
   position: relative;
-  left: 5%
 }
 
 .background-blue {

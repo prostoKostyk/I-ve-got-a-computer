@@ -44,6 +44,22 @@
             "scripts": []
           },
           "configurations": {
+            "github-pages": {
+              "baseHref": "/I-ve-got-a-computer/",
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "3mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "20kb",
+                  "maximumError": "40kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "production": {
               "budgets": [
                 {
@@ -105,6 +121,9 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }

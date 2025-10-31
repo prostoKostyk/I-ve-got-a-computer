@@ -34,10 +34,9 @@ export class HarmonicaComponent implements OnInit {
   }
 
   getNotes() {
-    this.restApiService.getHarmonicaNotes<HarmonicaNotes[]>().subscribe((notes) => {
-      this.notes = notes;
-    }, (error) => {
-      console.error("Error loading articles:", error);
+    this.restApiService.getHarmonicaNotes<HarmonicaNotes[]>().subscribe({
+      next: (notes) => this.notes = notes,
+      error: error => console.error("Error loading articles:", error),
     });
   }
 

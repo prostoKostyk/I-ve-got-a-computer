@@ -48,6 +48,7 @@
   <div class="article-form__group">
     <textarea #textarea
               class="article-form__textarea"
+              [ngClass]="{'article-form__textarea-edit': isEditMode}"
               [formControlName]="FIELDS.CONTENT"
               cdkTextareaAutosize
               placeholder="Содержание"
@@ -55,19 +56,32 @@
               (click)="updateCursorPosition()"
               (keyup)="updateCursorPosition()">
     </textarea>
-    <div *ngIf="!ignoreHtmlFormControl.value" class="article-form__textarea"
-         [innerHTML]="contentFormControl.value | safehtml"></div>
-    <div *ngIf="ignoreHtmlFormControl.value" class="article-form__textarea">{{ contentFormControl.value  }}</div>
+    <div *ngIf="!isEditMode">
+      <div *ngIf="!ignoreHtmlFormControl.value" class="article-form__textarea"
+           [innerHTML]="contentFormControl.value | safehtml"></div>
+      <div *ngIf="ignoreHtmlFormControl.value" class="article-form__textarea">{{ contentFormControl.value }}</div>
+    </div>
   </div>
   <mat-checkbox class="article-form__checkbox" color="primary" [formControlName]="FIELDS.IGNORE_HTML">Don't parse HTML
   </mat-checkbox>
   <p>
     <button class="article-form__submit-button" *ngIf="!isEditMode" (click)="addArticle()">Добавить</button>
+    <button class="article-form__submit-button form-open-button" *ngIf="!isEditMode"
+            [ngClass]="{'background-blue': formVisible}"
+            (click)="toggleForm()">Закрыть
+    </button>
   </p>
-  <p>
-    <button class="article-form__submit-button" *ngIf="isEditMode" (click)="addArticle()">Обновить</button>
-  </p>
+  <div class="article-form__submit-button-edit">
+    <button class="article-form__submit-button" *ngIf="isEditMode"
+            (click)="addArticle()">Обновить
+    </button>
+    <button class="article-form__submit-button" *ngIf="isEditMode"
+            [ngClass]="{'background-blue': formVisible}"
+            (click)="toggleForm()">{{ formVisible ? 'X' : '+' }}
+    </button>
+  </div>
 </form>
-<button class="article-form__submit-button form-open-button" [ngClass]="{'background-blue': formVisible}"
-        (click)="toggleForm()">{{ formVisible ? 'X' : '+' }}
+<button class="article-form__submit-button form-open-button" *ngIf="!isEditMode && !formVisible"
+        [ngClass]="{'background-blue': formVisible}"
+        (click)="toggleForm()">+
 </button>

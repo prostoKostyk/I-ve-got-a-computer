@@ -41,6 +41,8 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
   stopEdit = new EventEmitter();
   @Output()
   setArticle = new EventEmitter<Article>()
+  @Output()
+  toggleArticle = new EventEmitter<Article>()
   @Input()
   article: Article;
 
@@ -200,5 +202,9 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
     const image = " <p><img src=\"" + this.imageUrlFormControl.value + "\" alt=\"В\" style=\"max-width: 100%;\"></p> "
     this.contentFormControl.patchValue(currentInput.slice(0, this.cursorPosition) + image + currentInput.slice(this.cursorPosition));
     this.imageUrlFormControl.patchValue("");
+  }
+
+  emitToggleArticle(article: Article) {
+    this.toggleArticle.emit(article);
   }
 }

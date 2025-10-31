@@ -19,13 +19,15 @@ export class ArticleMainComponent implements OnInit {
   }
 
   private loadArticles() {
-    this.restApiService.getArticles<Article[]>().subscribe((articles) => {
-      this.articles = articles;
-      this.availableGroups = [];
-      this.availableSubGroups = [];
-      this.setArticlesByGroups();
-    }, (error) => {
-      console.error("Error loading articles:", error);
+    this.restApiService.getArticles<Article[]>().subscribe({
+      next: (articles) => {
+          this.articles = articles;
+          this.availableGroups = [];
+          this.availableSubGroups = [];
+          this.setArticlesByGroups();
+      },
+      error: (error) => console.error("Error loading articles:", error),
+      complete: () => console.log('Complete')
     });
   }
 

@@ -11,11 +11,11 @@
   }
 
   &__text {
+    padding-left: 6rem;
     white-space: pre-wrap;
   }
 
   &__content {
-    padding-left: 6rem;
   }
 
   &__edit, &__delete {
@@ -30,15 +30,38 @@
     border: 1px solid transparent;
     border-radius: .25rem;
     margin-left: 20px;
-    padding: calc(.875rem - 1px) calc(2rem - 1px);
+    padding: calc(.875rem - 1px) calc(1.6rem - 1px);
     width: auto;
+    position: sticky;
+    bottom: 1%;
   }
 
   &__edit {
     background-color: #388bfd1a;
     color: #4493f8;
-    padding: calc(.875rem - 1px) calc(3rem - 1px);
+    padding: calc(.875rem - 1px) calc(2rem - 1px);
+    margin-left: -20%;
   }
+
+  &__toggle {
+    color: #ffffff;
+    background-color: #4493f8;
+    box-shadow: 0 1px 1px 0 #01040999, 0 1px 3px 0 #01040999;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 1rem;
+    min-height: 2rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    margin-left: 20px;
+    padding: calc(.875rem - 1px) calc(1.4rem - 1px);
+    width: auto;
+    position: sticky;
+    bottom: 1%;
+
+  }
+
 }
 
 .cdk-drag-preview {

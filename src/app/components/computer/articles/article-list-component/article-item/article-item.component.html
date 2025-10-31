@@ -1,6 +1,7 @@
 <div class="article">
   <div *ngIf="!article.editing; else editArticle">
-    <mat-checkbox class="article__title-checkbox" color="primary" [(ngModel)]="article.done" (change)="updateDoneField($event)"></mat-checkbox>
+    <mat-checkbox class="article__title-checkbox" color="primary" [(ngModel)]="article.done"
+                  (change)="updateDoneField($event)"></mat-checkbox>
     <h4 class="article__title" cdkDrag (click)="toggleArticle(article)">{{ article.title + " " + article.order }}
     </h4>
     <div *ngIf="isArticleVisible(article)" class="article__content">
@@ -13,8 +14,8 @@
       <button class="article__edit" (click)="startEdit(article)">Edit</button>
       <button class="article__delete" (click)="sureButtonsArray[0]=true">Delete</button>
       <button class="article__delete" *ngIf="sureButtonsArray[0]" (click)="sureButtonsArray[1]=true">Sure?</button>
-      <button class="article__delete" *ngIf="sureButtonsArray[1]" (click)="deleteArticle(article)">Sure?Sure
-      </button>
+      <button class="article__delete" *ngIf="sureButtonsArray[1]" (click)="deleteArticle(article)">Sure?Sure</button>
+      <button class="article__toggle" (click)="toggleArticle(article)">-</button>
     </div>
   </div>
 </div>
@@ -27,5 +28,6 @@
     [article]="article"
     (stopEdit)="stopEdit($event)"
     (setArticle)="setArticle($event)"
+    (toggleArticle)="toggleArticle($event)"
   ></app-article-form>
 </ng-template>
