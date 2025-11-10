@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {Article, Group, SubGroup} from "../../../../../models/common";
 import {MatCheckboxChange} from "@angular/material/checkbox";
-import {RestApiService} from "../../../../../services/rest-api.service";
+import {ArticleRestApiService} from "../../../../../services/rest-api-articles.service";
 
 @Component({
   selector: "app-article-item", templateUrl: "./article-item.component.html", styleUrl: "./article-item.component.less"
@@ -16,7 +16,7 @@ export class ArticleItemComponent {
   private visibleArticles: { [key: string]: boolean } = {};
   protected imageUrlsArray: string[] = [];
 
-  constructor(private restApiService: RestApiService) {
+  constructor(private articleRestApiService: ArticleRestApiService) {
   }
 
   toggleArticle(article: any) {
@@ -55,9 +55,9 @@ export class ArticleItemComponent {
   }
 
   updateDoneField(event: MatCheckboxChange) {
-    this.article._id && this.restApiService.updateArticle(this.article).subscribe({
-      next: (s) => console.log(s),
-      error: (err) => console.error("Error updating article:", err)
+    this.article._id && this.articleRestApiService.updateArticle(this.article).subscribe({
+      next: (s: Object) => console.log(s),
+      error: (err: Object) => console.error("Error updating article:", err)
     });
   }
 }

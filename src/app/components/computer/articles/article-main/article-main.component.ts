@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from "@angular/core";
-import {RestApiService} from "../../../../services/rest-api.service";
 import {Article, DeleteGroupInput, Group, SubGroup} from "../../../../models/common";
+import {ArticleRestApiService} from "../../../../services/rest-api-articles.service";
 
 @Component({
   selector: "app-article-main", templateUrl: "./article-main.component.html", styleUrl: "./article-main.component.less"
@@ -11,7 +11,7 @@ export class ArticleMainComponent implements OnInit {
   protected availableSubGroups: SubGroup[] = [];
   @Output() openDesktop = new EventEmitter<boolean>();
 
-  constructor(private restApiService: RestApiService) {
+  constructor(private articleRestApiService: ArticleRestApiService) {
   }
 
   ngOnInit() {
@@ -19,7 +19,7 @@ export class ArticleMainComponent implements OnInit {
   }
 
   private loadArticles() {
-    this.restApiService.getArticles<Article[]>().subscribe({
+    this.articleRestApiService.getArticles<Article[]>().subscribe({
       next: (articles) => {
           this.articles = articles;
           this.availableGroups = [];
@@ -55,7 +55,8 @@ export class ArticleMainComponent implements OnInit {
   }
 
   addArticle(article: Article) {
-    this.restApiService.addArticle(article).subscribe((newArticle) => {
+    this.articleRestApiService.addArticle(article).subscribe((newArticles: Article[]) => {
+      const newArticle = newArticles[0];
       this.articles.push(newArticle);
       let indexOfGroup = this.availableGroups.findIndex(g => g.group === newArticle.group)
       if (indexOfGroup === -1) {
@@ -79,7 +80,7 @@ export class ArticleMainComponent implements OnInit {
   }
 
   updateArticle(updatedArticle: Article) {
-    updatedArticle._id && this.restApiService.updateArticle(updatedArticle).subscribe(() => {
+    updatedArticle._id && this.articleRestApiService.updateArticle(updatedArticle).subscribe(() => {
       const index = this.articles.findIndex(a => a._id === updatedArticle._id);
       if (index > -1) {
         this.articles[index] = updatedArticle;
@@ -90,7 +91,7 @@ export class ArticleMainComponent implements OnInit {
   }
 
   deleteArticle(article: Article) {
-    article._id && this.restApiService.deleteArticle(article._id).subscribe(() => {
+    article._id && this.articleRestApiService.deleteArticle(article._id).subscribe(() => {
       this.loadArticles();
     }, (error) => {
       console.error("Error deleting article:", error);
@@ -105,7 +106,7 @@ export class ArticleMainComponent implements OnInit {
       this.articles.filter(article => article.subGroup === d.subGroup?.subGroup) :
       this.articles.filter(article => article.group === d.group?.group);
     articlesInGroup.forEach((article, index) => {
-      article._id && this.restApiService.deleteArticle(article._id).subscribe(() => {
+      article._id && this.articleRestApiService.deleteArticle(article._id).subscribe(() => {
         index === articlesInGroup.length - 1 && this.loadArticles();
       }, (error) => {
         console.error("Error deleting article:", error);

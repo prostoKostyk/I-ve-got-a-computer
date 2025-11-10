@@ -12,7 +12,7 @@ import {
 import {Article, Group, SubGroup} from "../../../../models/common";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ArticleFormFields} from "../../../../constants/constants";
-import {RestApiService} from "../../../../services/rest-api.service";
+import {ArticleRestApiService} from "../../../../services/rest-api-articles.service";
 
 interface ArticleFormGroup {
   [ArticleFormFields.SELECTED_GROUP]: FormControl<string | null>;
@@ -59,7 +59,7 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
 
   @ViewChild("textarea") textarea: ElementRef;
 
-  constructor(private formBuilder: FormBuilder, private restApiService: RestApiService, private cdr: ChangeDetectorRef, private ngZone: NgZone) {
+  constructor(private formBuilder: FormBuilder, private articleRestApiService: ArticleRestApiService, private cdr: ChangeDetectorRef, private ngZone: NgZone) {
   }
 
   get selectedGroupFormControl(): FormControl {
@@ -152,9 +152,10 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
   updateArticle(newArticle: Article) {
     // @ts-ignore
     newArticle._id = this.article._id;
-    newArticle._id !== "" && this.restApiService.updateArticle(newArticle).subscribe({
-      next: (updatedArticle: Article) => {
-          this.setArticle.emit(updatedArticle);
+    newArticle._version = this.article._version ? this.article._version + 1 : 1;
+    newArticle._id !== "" && this.articleRestApiService.updateArticle(newArticle).subscribe({
+      next: (updatedArticle: Article[]) => {
+          this.setArticle.emit(updatedArticle[0]);
           this.toggleForm();
       },
       error: (err) => console.error("Error updating article:", err)
@@ -202,9 +203,5 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
     const image = " <p><img src=\"" + this.imageUrlFormControl.value + "\" alt=\"В\" style=\"max-width: 100%;\"></p> "
     this.contentFormControl.patchValue(currentInput.slice(0, this.cursorPosition) + image + currentInput.slice(this.cursorPosition));
     this.imageUrlFormControl.patchValue("");
-  }
-
-  emitToggleArticle(article: Article) {
-    this.toggleArticle.emit(article);
   }
 }

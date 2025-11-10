@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Article, HarmonicaNotes, User} from "../models/common";
+import {HarmonicaNotes, User} from "../models/common";
 
 @Injectable({
   providedIn: "root"
@@ -60,24 +60,6 @@ export class RestApiService {
 
   isLoggedIn(): boolean {
     return !!this.getToken();
-  }
-
-  public getArticles<T>(): Observable<T> {
-    return this.httpClient.get<T>(this.apiUrl + this.articlesUrlWithMeta, {headers: this.initHeaders()});
-  }
-
-  public addArticle(article: Article): Observable<Article> {
-    return this.httpClient.post<Article>(this.apiUrl + this.articlesUrl, article, {headers: this.initHeaders()});
-  }
-
-  public deleteArticle(articleId: string): Observable<any> {
-    const url = `${this.apiUrl}${this.articlesUrl}/${articleId}`;
-    return this.httpClient.delete(url, {headers: this.initHeaders()});
-  }
-
-  public updateArticle(article: Article): Observable<any> {
-    const url = `${this.apiUrl}${this.articlesUrl}/${article._id}`;
-    return this.httpClient.put(url, article, {headers: this.initHeaders()});
   }
 
   public getHarmonicaNotes<T>(): Observable<T> {

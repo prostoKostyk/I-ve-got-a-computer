@@ -1,6 +1,9 @@
 export const GAME_WIDTH = 1024;
 export const GAME_HEIGHT = 640;
 
+export const API_DOMAIN ="https://users-93fb.restdb.io";
+export const NODEJS_API_DOMAIN ="http://localhost:3000";
+
 export enum PlayerStates {
   STANDING = 0,
   RUNNING = 1,
@@ -40,4 +43,5 @@ export enum ArticleFormFields {
 
 export const NOT_DELETED_SECTIONS = ["Angular", "CSS"];
 export const NOT_DELETED_SUBSECTIONS = ["Angular basic", "CSS Basic"];
+
 

@@ -1,14 +1,14 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {Article, DeleteGroupInput, Group, SubGroup} from "../../../../../models/common";
-import {NOT_DELETED_SECTIONS, NOT_DELETED_SUBSECTIONS} from "../../../../../constants/constants";
+import {NOT_DELETED_SUBSECTIONS} from "../../../../../constants/constants";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
-import {RestApiService} from "../../../../../services/rest-api.service";
 import {forkJoin} from "rxjs";
+import {ArticleRestApiService} from "../../../../../services/rest-api-articles.service";
 
 @Component({
-  selector: 'app-article-sub-group',
-  templateUrl: './article-sub-group.component.html',
-  styleUrl: './article-sub-group.component.less'
+  selector: "app-article-sub-group",
+  templateUrl: "./article-sub-group.component.html",
+  styleUrl: "./article-sub-group.component.less"
 })
 export class ArticleSubGroupComponent {
   @Output()
@@ -28,7 +28,7 @@ export class ArticleSubGroupComponent {
   private visibleSubGroups: { [key: string]: boolean } = {};
   protected sureButtonsArray: boolean[] = [false, false, false, false];
 
-  constructor(private restApiService: RestApiService) {
+  constructor(private articleRestApiService: ArticleRestApiService) {
   }
 
   private sortArticles() {
@@ -54,14 +54,17 @@ export class ArticleSubGroupComponent {
   private updateArticlesOrderBackend(previousIndex: number, currentIndex: number) {
     const updatedArticlePrevious = this.subGroup.articles[previousIndex];
     const updatedArticleCurrent = this.subGroup.articles[currentIndex];
+    updatedArticlePrevious.order = previousIndex + 1;
+    updatedArticleCurrent.order = currentIndex + 1;
     updatedArticlePrevious._id && updatedArticleCurrent._id && forkJoin(
-      this.restApiService.updateArticle(updatedArticlePrevious),
-      this.restApiService.updateArticle(updatedArticleCurrent),
-    ).subscribe(([res1, res2]) => {
-      this.updateArticlesOrder();
-      }, (error) => {
-        console.error("Error updating article:", error);
-      });
+      [this.articleRestApiService.updateArticle(updatedArticlePrevious),
+        this.articleRestApiService.updateArticle(updatedArticleCurrent)]
+    ).subscribe({
+      next: () => this.updateArticlesOrder(),
+      error: (error) => {
+        console.error("Error updating article order:", error);
+      }
+    })
   }
 
   isSubGroupVisible(subGroup: SubGroup): boolean {

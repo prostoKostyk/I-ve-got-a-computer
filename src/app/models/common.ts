@@ -33,6 +33,7 @@ export interface Article {
   order: number;
   ignoreHtml: boolean;
   done?: boolean;
+  _version?: number;
 }
 
 export interface Group {
