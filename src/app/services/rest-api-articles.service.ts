@@ -10,9 +10,11 @@ import {API_DOMAIN, NODEJS_API_DOMAIN} from "../constants/constants";
 
 export class ArticleRestApiService {
 
-  private domain = API_DOMAIN;
+  private domain = NODEJS_API_DOMAIN;
   private articlesPath = "/rest/articles";
   private articlePath = "/rest/article";
+  private articlePathSearchByTitle = "/rest/searcharticlebyname";
+  private articlePathSearchByTitleOrContent = "/rest/searcharticlebynameorcontent";
   private articlesPathWithMeta = "/rest/articles?metafields=true";
 
   constructor(private httpClient: HttpClient) {
@@ -24,6 +26,16 @@ export class ArticleRestApiService {
 
   public getArticles<T>(): Observable<T> {
     return this.httpClient.get<T>(this.domain + this.articlesPath, {headers: this.initHeaders()});
+  }
+
+  public findArticlesByTitle<T>(searchValue: string): Observable<T> {
+    const url = `${this.domain + this.articlePathSearchByTitle}/${searchValue}`;
+    return this.httpClient.get<T>(url, {headers: this.initHeaders()});
+  }
+
+  public findArticlesByTitleOrContent<T>(searchValue: string): Observable<T> {
+    const url = `${this.domain + this.articlePathSearchByTitleOrContent}/${searchValue}`;
+    return this.httpClient.get<T>(url, {headers: this.initHeaders()});
   }
 
   public addArticle(article: Article): Observable<Article[]> {

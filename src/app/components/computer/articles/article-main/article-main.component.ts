@@ -1,12 +1,14 @@
 import {Component, EventEmitter, OnInit, Output} from "@angular/core";
 import {Article, DeleteGroupInput, Group, SubGroup} from "../../../../models/common";
 import {ArticleRestApiService} from "../../../../services/rest-api-articles.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: "app-article-main", templateUrl: "./article-main.component.html", styleUrl: "./article-main.component.less"
 })
 export class ArticleMainComponent implements OnInit {
   protected articles: Article[] = [];
+  protected foundArticles: Article[] = [];
   protected availableGroups: Group[] = [];
   protected availableSubGroups: SubGroup[] = [];
   @Output() openDesktop = new EventEmitter<boolean>();
@@ -21,27 +23,47 @@ export class ArticleMainComponent implements OnInit {
   private loadArticles() {
     this.articleRestApiService.getArticles<Article[]>().subscribe({
       next: (articles) => {
-          this.articles = articles;
-          this.availableGroups = [];
-          this.availableSubGroups = [];
-          this.setArticlesByGroups();
+        this.articles = articles;
+        this.availableGroups = [];
+        this.availableSubGroups = [];
+        this.setArticlesByGroups();
       },
       error: (error) => console.error("Error loading articles:", error),
-      complete: () => console.log('Complete')
+      complete: () => console.log("Complete")
     });
   }
 
-  private setArticlesByGroups() {
-    this.articles.forEach(a => {
+  searchArticles(searchValue: string, byContent: boolean) {
+    let o: Observable<Article[]> = byContent ?
+      this.articleRestApiService.findArticlesByTitleOrContent<Article[]>(searchValue)
+      : this.articleRestApiService.findArticlesByTitle<Article[]>(searchValue)
+    o.subscribe({
+      next: (articles) => {
+        this.foundArticles = articles;
+        this.setArticlesByGroups(true);
+      },
+      error: (error) => console.error("Error loading articles:", error),
+      complete: () => console.log("Complete")
+    });
+  }
+
+  cancelSearch() {
+    this.setArticlesByGroups();
+  }
+
+  private setArticlesByGroups(searched?: boolean) {
+    this.availableGroups = [];
+    this.availableSubGroups = [];
+    (searched ? this.foundArticles: this.articles).forEach(a => {
       const subGroupIndex = this.availableSubGroups.findIndex(g => a.subGroup === g.subGroup);
       if (subGroupIndex > -1) {
         this.availableSubGroups[subGroupIndex].articles.push(a);
       } else {
         this.availableSubGroups.push({
-            subGroup: a.subGroup,
-            parentGroup: a.group,
-            articles: [a]
-          });
+          subGroup: a.subGroup,
+          parentGroup: a.group,
+          articles: [a]
+        });
       }
     })
     this.availableSubGroups.forEach(subG => {

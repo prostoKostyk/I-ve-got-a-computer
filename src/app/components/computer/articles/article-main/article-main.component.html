@@ -5,5 +5,7 @@
               [availableSubGroups]="availableSubGroups"
               (articleDeleted)="deleteArticle($event)"
               (groupDeleted)="deleteGroupOrSubGroup({group: $event.group, subGroup: $event.subGroup})"
-              (articleUpdated)="updateArticle($event)">
+              (articleUpdated)="updateArticle($event)"
+              (searchArticles)="searchArticles($event.searchInput, $event.searchByContent)"
+              (cancelSearch)="cancelSearch()">
 </app-article-list-component>

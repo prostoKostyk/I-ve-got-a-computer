@@ -1,5 +1,23 @@
+<div class="article-list__iframe">
+  <button class="article-list__search-button" *ngIf="!iframeVisible" (click)="iframeVisible = true">
+    <i class="fa fa-music"></i></button>
+  <iframe *ngIf="iframeVisible"
+          class="article-list__iframe-window" src="https://www.youtube.com/embed/jfKfPfyJRdk?si=R4tvGMMYFSLp1__J"
+          title="YouTube video player" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 <div class="article-list">
-<!--  <h2 class="article-list__title">Список статей</h2>-->
+  <button class="article-list__search-button" *ngIf="!searchVisible" (click)="searchVisible = true">
+    <i class="fa fa-search"></i></button>
+  <div class="article-list__search-container" *ngIf="searchVisible">
+    <input placeholder="Search article" class="article-list__search-input" type="text" [(ngModel)]="searchInput">
+    <button class="article-list__search-button" (click)="_searchArticles()"><i class="fa fa-search"></i></button>
+    <button class="article-list__search-button" (click)="_cancelSearch()">Cancel</button>
+    <mat-checkbox class="article-list__search-checkbox" color="primary" [(ngModel)]="searchByContent">
+      Search by content
+    </mat-checkbox>
+  </div>
   <div *ngFor="let group of availableGroups" class="article-list__group">
     <app-article-group [group]=group
                        [articles]="articles"
