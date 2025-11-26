@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from "@angular/core";
 import {Article, DeleteGroupInput, Group, SubGroup} from "../../../../models/common";
 import {ArticleRestApiService} from "../../../../services/rest-api-articles.service";
 import {Observable} from "rxjs";
+import {GroupRestApiService} from "../../../../services/rest-api-groups.service";
 
 @Component({
   selector: "app-article-main", templateUrl: "./article-main.component.html", styleUrl: "./article-main.component.less"
@@ -13,7 +14,7 @@ export class ArticleMainComponent implements OnInit {
   protected availableSubGroups: SubGroup[] = [];
   @Output() openDesktop = new EventEmitter<boolean>();
 
-  constructor(private articleRestApiService: ArticleRestApiService) {
+  constructor(private articleRestApiService: ArticleRestApiService, private groupRestApiService: GroupRestApiService) {
   }
 
   ngOnInit() {
@@ -24,12 +25,24 @@ export class ArticleMainComponent implements OnInit {
     this.articleRestApiService.getArticles<Article[]>().subscribe({
       next: (articles) => {
         this.articles = articles;
-        this.availableGroups = [];
-        this.availableSubGroups = [];
         this.setArticlesByGroups();
       },
       error: (error) => console.error("Error loading articles:", error),
-      complete: () => console.log("Complete")
+      complete: () => console.log("Complete loading articles")
+    });
+    this.groupRestApiService.getGroupsWithArticles<Group[]>().subscribe({
+      next: (groups) => {
+        this.availableGroups = groups;
+        this.setArticlesByGroups();
+      },
+      error: (error) => console.error("Error loading groups:", error),
+    });
+    this.groupRestApiService.getSubGroupsWithArticles().subscribe({
+      next: (subGroups) => {
+        this.availableSubGroups = subGroups;
+        this.setArticlesByGroups();
+      },
+      error: (error) => console.error("Error loading subGroups:", error),
     });
   }
 
@@ -52,28 +65,6 @@ export class ArticleMainComponent implements OnInit {
   }
 
   private setArticlesByGroups(searched?: boolean) {
-    this.availableGroups = [];
-    this.availableSubGroups = [];
-    (searched ? this.foundArticles: this.articles).forEach(a => {
-      const subGroupIndex = this.availableSubGroups.findIndex(g => a.subGroup === g.subGroup);
-      if (subGroupIndex > -1) {
-        this.availableSubGroups[subGroupIndex].articles.push(a);
-      } else {
-        this.availableSubGroups.push({
-          subGroup: a.subGroup,
-          parentGroup: a.group,
-          articles: [a]
-        });
-      }
-    })
-    this.availableSubGroups.forEach(subG => {
-      const groupIndex = this.availableGroups.findIndex(g => g.group === subG.parentGroup);
-      if (groupIndex > -1) {
-        this.availableGroups[groupIndex].subGroups.push(subG);
-      } else {
-        this.availableGroups.push({group: subG.parentGroup, subGroups: [subG]});
-      }
-    })
   }
 
   addArticle(article: Article) {
