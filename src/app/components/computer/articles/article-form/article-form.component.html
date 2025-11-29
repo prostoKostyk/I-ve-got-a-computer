@@ -73,7 +73,9 @@
   </p>
   <div class="article-form__submit-button-edit">
     <button class="article-form__submit-button" *ngIf="isEditMode"
-            (click)="addArticle()">Обновить
+            (click)="addArticle()">
+      <span *ngIf="!isLoading">Обновить</span>
+      <mat-spinner *ngIf="isLoading" diameter=20></mat-spinner>
     </button>
     <button class="article-form__submit-button" *ngIf="isEditMode"
             [ngClass]="{'background-blue': formVisible}"

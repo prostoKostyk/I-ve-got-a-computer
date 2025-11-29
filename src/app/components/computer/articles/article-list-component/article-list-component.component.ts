@@ -11,6 +11,8 @@ export class ArticleListComponentComponent {
   @Input() articles: Article[];
   @Input() availableGroups: Group[];
   @Input() availableSubGroups: SubGroup[];
+  @Input() foundArticles: Article[];
+  @Input() isLoading = false;
   @Output() articleDeleted = new EventEmitter<Article>();
   @Output() groupDeleted = new EventEmitter<DeleteGroupInput>();
   @Output() articleUpdated = new EventEmitter<Article>();

@@ -18,15 +18,31 @@
       Search by content
     </mat-checkbox>
   </div>
-  <div *ngFor="let group of availableGroups" class="article-list__group">
-    <app-article-group [group]=group
-                       [articles]="articles"
-                       [availableGroups]="availableGroups"
-                       [availableSubGroups]="availableSubGroups"
-                       (articleDeleted)="deleteArticle($event)"
-                       (groupDeleted)="deleteGroup($event)"
-                       (articleUpdated)="updateArticle($event)">
-    </app-article-group>
+
+  <mat-spinner class="article-list__spinner" *ngIf="isLoading" diameter="150"></mat-spinner>
+  <div *ngIf="!isLoading">
+    <div *ngIf="foundArticles.length === 0">
+      <div class="article-list__group" *ngFor="let group of availableGroups">
+        <app-article-group [group]=group
+                           [articles]="articles"
+                           [availableGroups]="availableGroups"
+                           [availableSubGroups]="availableSubGroups"
+                           (articleDeleted)="deleteArticle($event)"
+                           (groupDeleted)="deleteGroup($event)"
+                           (articleUpdated)="updateArticle($event)">
+        </app-article-group>
+      </div>
+    </div>
+    <div *ngIf="foundArticles.length > 0">
+      <div class="article-list__group" *ngFor="let foundArticle of foundArticles">
+        <app-article-item [article]="foundArticle"
+                          [availableGroups]="availableGroups"
+                          [availableSubGroups]="availableSubGroups"
+                          (articleDeleted)="deleteArticle($event)"
+                          (articleUpdated)="updateArticle($event)">>
+        </app-article-item>
+      </div>
+    </div>
   </div>
 </div>
 <button class="article-list__toggle-button" (click)="closeAllGroups()">Свернуть всё</button>

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from "@angular/core";
 import {Article, DeleteGroupInput, Group, SubGroup} from "../../../../models/common";
 import {ArticleRestApiService} from "../../../../services/rest-api-articles.service";
-import {Observable} from "rxjs";
+import {finalize, Observable} from "rxjs";
 import {GroupRestApiService} from "../../../../services/rest-api-groups.service";
 
 @Component({
@@ -12,6 +12,7 @@ export class ArticleMainComponent implements OnInit {
   protected foundArticles: Article[] = [];
   protected availableGroups: Group[] = [];
   protected availableSubGroups: SubGroup[] = [];
+  protected isLoading = false;
   @Output() openDesktop = new EventEmitter<boolean>();
 
   constructor(private articleRestApiService: ArticleRestApiService, private groupRestApiService: GroupRestApiService) {
@@ -22,49 +23,54 @@ export class ArticleMainComponent implements OnInit {
   }
 
   private loadArticles() {
-    this.articleRestApiService.getArticles<Article[]>().subscribe({
-      next: (articles) => {
-        this.articles = articles;
-        this.setArticlesByGroups();
-      },
-      error: (error) => console.error("Error loading articles:", error),
-      complete: () => console.log("Complete loading articles")
-    });
+    this.isLoading = true;
+    this.articleRestApiService.getArticles<Article[]>()
+      .subscribe({
+        next: (articles) => {
+          this.articles = articles;
+        },
+        error: (error) => console.error("Error loading articles:", error),
+        complete: () => console.log("Complete loading articles")
+      });
     this.groupRestApiService.getGroupsWithArticles<Group[]>().subscribe({
       next: (groups) => {
         this.availableGroups = groups;
-        this.setArticlesByGroups();
       },
       error: (error) => console.error("Error loading groups:", error),
     });
-    this.groupRestApiService.getSubGroupsWithArticles().subscribe({
-      next: (subGroups) => {
-        this.availableSubGroups = subGroups;
-        this.setArticlesByGroups();
-      },
-      error: (error) => console.error("Error loading subGroups:", error),
-    });
+    this.groupRestApiService.getSubGroupsWithArticles()
+      .pipe(
+        finalize(() => this.isLoading = false)
+      )
+      .subscribe({
+        next: (subGroups) => {
+          this.availableSubGroups = subGroups;
+        },
+        error: (error) => console.error("Error loading subGroups:", error),
+      });
   }
 
   searchArticles(searchValue: string, byContent: boolean) {
-    let o: Observable<Article[]> = byContent ?
+    this.isLoading = true
+    this.foundArticles = [];
+    let searchObservable: Observable<Article[]> = byContent ?
       this.articleRestApiService.findArticlesByTitleOrContent<Article[]>(searchValue)
       : this.articleRestApiService.findArticlesByTitle<Article[]>(searchValue)
-    o.subscribe({
-      next: (articles) => {
-        this.foundArticles = articles;
-        this.setArticlesByGroups(true);
-      },
-      error: (error) => console.error("Error loading articles:", error),
-      complete: () => console.log("Complete")
-    });
+    searchObservable
+      .pipe(
+        finalize(() => this.isLoading = false)
+      )
+      .subscribe({
+        next: (articles) => {
+          articles.length > 0 ? this.foundArticles = articles : this.foundArticles.push({title: "Nothing found"} as Article);
+        },
+        error: (error) => console.error("Error loading articles:", error),
+        complete: () => console.log("Complete")
+      });
   }
 
   cancelSearch() {
-    this.setArticlesByGroups();
-  }
-
-  private setArticlesByGroups(searched?: boolean) {
+    this.foundArticles = [];
   }
 
   addArticle(article: Article) {

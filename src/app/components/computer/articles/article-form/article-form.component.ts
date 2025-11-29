@@ -13,6 +13,7 @@ import {Article, Group, SubGroup} from "../../../../models/common";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ArticleFormFields} from "../../../../constants/constants";
 import {ArticleRestApiService} from "../../../../services/rest-api-articles.service";
+import {finalize} from "rxjs";
 
 interface ArticleFormGroup {
   [ArticleFormFields.SELECTED_GROUP]: FormControl<string | null>;
@@ -48,6 +49,7 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
 
   public group: FormGroup<ArticleFormGroup>;
   formVisible: boolean;
+  protected isLoading = false;
   filteredSubGroups: SubGroup[];
   isBoldText: boolean;
 
@@ -151,15 +153,20 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
 
   updateArticle(newArticle: Article) {
     // @ts-ignore
+    this.isLoading = true;
     newArticle._id = this.article._id;
     newArticle._version = this.article._version ? this.article._version + 1 : 1;
-    newArticle._id !== "" && this.articleRestApiService.updateArticle(newArticle).subscribe({
-      next: (updatedArticle: Article[]) => {
+    newArticle._id !== "" && this.articleRestApiService.updateArticle(newArticle)
+      .pipe(
+        finalize(() => this.isLoading = false)
+      )
+      .subscribe({
+        next: (updatedArticle: Article[]) => {
           this.setArticle.emit(updatedArticle[0]);
           this.toggleForm();
-      },
-      error: (err) => console.error("Error updating article:", err)
-    });
+        },
+        error: (err) => console.error("Error updating article:", err)
+      });
   }
 
   onSelectedGroupChange() {

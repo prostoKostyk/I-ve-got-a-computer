@@ -26,10 +26,11 @@ import {MatCheckbox} from "@angular/material/checkbox";
 import { HarmonicaComponent } from './components/computer/harmonica/harmonica.component';
 import {HighlightJsModule} from "ngx-highlight-js";
 import { HighlightDirective } from './directives/highlight.directive';
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HighlightDirective, GameComponent, ComputerComponent, ArticleListComponentComponent, ArticleFormComponent, ArticleMainComponent, DesktopComponent, ArticleGroupComponent, ArticleItemComponent, ArticleSubGroupComponent, HarmonicaComponent, HighlightDirective],
-    imports: [BrowserModule, HighlightJsModule, AppRoutingModule, HttpClientModule, FormsModule, NgOptimizedImage, CdkTextareaAutosize, CdkDropList, CdkDrag, SafeHtmlPipe, ReactiveFormsModule, MatCheckbox,],
+    imports: [BrowserModule, HighlightJsModule, AppRoutingModule, HttpClientModule, FormsModule, NgOptimizedImage, CdkTextareaAutosize, CdkDropList, CdkDrag, SafeHtmlPipe, ReactiveFormsModule, MatCheckbox, MatProgressSpinner,],
   providers: [{
     provide: CURRENT_LEVEL,
     useFactory: (levelManager: LevelManagerService) => levelManager.currentLevel$,
