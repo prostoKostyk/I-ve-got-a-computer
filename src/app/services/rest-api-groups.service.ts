@@ -10,7 +10,7 @@ import {API_DOMAIN, NODEJS_API_DOMAIN} from "../constants/constants";
 
 export class GroupRestApiService {
 
-  private domain = "http://localhost:3000";
+  private domain = API_DOMAIN;
   private groupsPath = "/rest/groups";
   private groupPath = "/rest/group";
   private groupWithArticlesPath = "/rest/groupswitharticles";
