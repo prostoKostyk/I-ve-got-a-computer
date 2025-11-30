@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {HarmonicaNotes, User} from "../models/common";
+import {HarmonicaNotes, Monitoring, User} from "../models/common";
 
 @Injectable({
   providedIn: "root"
@@ -10,9 +10,9 @@ import {HarmonicaNotes, User} from "../models/common";
 export class RestApiService {
 
   private apiUrl = "https://users-93fb.restdb.io";
+  private localHostApiUrl = "http://localhost:3001";
   private usersUrl = "/rest/gameusers"
-  private articlesUrl = "/rest/articles";
-  private articlesUrlWithMeta = "/rest/articles?metafields=true";
+  private monitoringUrl = "/rest/monitoring";
   private harmonicaNotesUrl = "/rest/harmonica-notes  ";
 
   constructor(private httpClient: HttpClient) {
@@ -78,5 +78,9 @@ export class RestApiService {
   public updateHarmonicaNotes(harmonicaNotes: HarmonicaNotes): Observable<any> {
     const url = `${this.apiUrl}${this.harmonicaNotesUrl}/${harmonicaNotes._id}`;
     return this.httpClient.put(url, harmonicaNotes, {headers: this.initHeaders()});
+  }
+
+  public getMonitoring(): Observable<Monitoring[]> {
+    return this.httpClient.get<Monitoring[]>(this.localHostApiUrl + this.monitoringUrl, {headers: this.initHeaders()});
   }
 }

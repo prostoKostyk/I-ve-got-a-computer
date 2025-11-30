@@ -39,7 +39,16 @@ export interface Article {
 export interface Group {
   subGroups: SubGroup[];
   group: string;
+  groupName?: string;
   open?: boolean;
+}
+export interface GroupInput {
+  group: string;
+}
+
+export interface SubGroupInput {
+  subGroup: string;
+  parentGroup: string;
 }
 
 export interface SubGroup {
@@ -53,8 +62,22 @@ export interface DeleteGroupInput {
   subGroup?: SubGroup
 }
 
+export interface AddArticleInput {
+  newArticle: Article,
+  newGroup: string,
+  newSubGroup: string
+}
+
 export interface HarmonicaNotes {
   _id?: string,
   tabs: string,
   title?: string
+}
+
+export interface Monitoring {
+  id: string,
+  name: string,
+  url: string,
+  value: string
+  date: string
 }

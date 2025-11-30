@@ -10,7 +10,7 @@ import {API_DOMAIN, NODEJS_API_DOMAIN} from "../constants/constants";
 
 export class ArticleRestApiService {
 
-  private domain = API_DOMAIN;
+  private domain = "http://localhost:3000";
   private articlesPath = "/rest/articles";
   private articlePath = "/rest/article";
   private articlePathSearchByTitle = "/rest/searcharticlebyname";

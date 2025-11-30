@@ -2,7 +2,7 @@
   <div class="desktop__folder" (click)="goToGame()">Turn of computer</div>
   <div class="desktop__folder" (click)="openArticle()">Articles</div>
   <div class="desktop__folder" (click)="openHarmonica()">Harmonica</div>
-  <div class="desktop__folder">4</div>
+  <div class="desktop__folder" (click)="openMonitoring()">Monitoring</div>
   <div class="desktop__folder">5</div>
   <div class="desktop__folder">6</div>
   <div class="desktop__folder">7</div>
@@ -10,3 +10,4 @@
 </div>
 <app-article-main class="computer__article" *ngIf="articleVisible" (openDesktop)="openDesktop()"></app-article-main>
 <app-harmonica class="computer__article" *ngIf="harmonicaVisible" (openDesktop)="openDesktop()"></app-harmonica>
+<app-monitoring class="computer__article" *ngIf="monitoringVisible" (openDesktop)="openDesktop()"></app-monitoring>

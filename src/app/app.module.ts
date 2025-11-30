@@ -27,10 +27,21 @@ import { HarmonicaComponent } from './components/computer/harmonica/harmonica.co
 import {HighlightJsModule} from "ngx-highlight-js";
 import { HighlightDirective } from './directives/highlight.directive';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MonitoringComponent} from "./components/computer/monitoring/monitoring.component";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
+  MatTable
+} from "@angular/material/table";
+import {MatSort} from "@angular/material/sort";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HighlightDirective, GameComponent, ComputerComponent, ArticleListComponentComponent, ArticleFormComponent, ArticleMainComponent, DesktopComponent, ArticleGroupComponent, ArticleItemComponent, ArticleSubGroupComponent, HarmonicaComponent, HighlightDirective],
-    imports: [BrowserModule, HighlightJsModule, AppRoutingModule, HttpClientModule, FormsModule, NgOptimizedImage, CdkTextareaAutosize, CdkDropList, CdkDrag, SafeHtmlPipe, ReactiveFormsModule, MatCheckbox, MatProgressSpinner,],
+  declarations: [AppComponent, LoginComponent, HighlightDirective, GameComponent, ComputerComponent, ArticleListComponentComponent, ArticleFormComponent, ArticleMainComponent, DesktopComponent, ArticleGroupComponent, ArticleItemComponent, ArticleSubGroupComponent, HarmonicaComponent, HighlightDirective, MonitoringComponent],
+  imports: [BrowserModule, HighlightJsModule, AppRoutingModule, HttpClientModule, FormsModule, NgOptimizedImage, CdkTextareaAutosize, CdkDropList, CdkDrag, SafeHtmlPipe, ReactiveFormsModule, MatCheckbox, MatProgressSpinner, MatTable, MatColumnDef, MatHeaderCell, MatCell, MatCellDef, MatHeaderCellDef, MatHeaderRow, MatRow, MatHeaderRowDef, MatRowDef, MatSort,],
   providers: [{
     provide: CURRENT_LEVEL,
     useFactory: (levelManager: LevelManagerService) => levelManager.currentLevel$,

@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Article, SubGroup} from "../models/common";
+import {Article, Group, GroupInput, SubGroup, SubGroupInput} from "../models/common";
 import {API_DOMAIN, NODEJS_API_DOMAIN} from "../constants/constants";
 
 @Injectable({
@@ -10,7 +10,7 @@ import {API_DOMAIN, NODEJS_API_DOMAIN} from "../constants/constants";
 
 export class GroupRestApiService {
 
-  private domain = API_DOMAIN;
+  private domain = "http://localhost:3000";
   private groupsPath = "/rest/groups";
   private groupPath = "/rest/group";
   private groupWithArticlesPath = "/rest/groupswitharticles";
@@ -33,8 +33,8 @@ export class GroupRestApiService {
     return this.httpClient.get<T>(this.domain + this.groupWithArticlesPath, {headers: this.initHeaders()});
   }
 
-  public addGroup(article: Article): Observable<Article[]> {
-    return this.httpClient.post<Article[]>(this.domain + this.groupPath, article, {headers: this.initHeaders()});
+  public addGroup(groupInput: GroupInput): Observable<Group[]> {
+    return this.httpClient.post<Group[]>(this.domain + this.groupPath, groupInput, {headers: this.initHeaders()});
   }
 
   public getSubGroups(): Observable<SubGroup[]> {
@@ -45,7 +45,7 @@ export class GroupRestApiService {
     return this.httpClient.get<SubGroup[]>(this.domain + this.subGroupsWithArticlesPath, {headers: this.initHeaders()});
   }
 
-  public addSubGroup(article: Article): Observable<Article[]> {
-    return this.httpClient.post<Article[]>(this.domain + this.subGroupPath, article, {headers: this.initHeaders()});
+  public addSubGroup(subGroupInput: SubGroupInput): Observable<SubGroupInput[]> {
+    return this.httpClient.post<SubGroupInput[]>(this.domain + this.subGroupPath, subGroupInput, {headers: this.initHeaders()});
   }
 }

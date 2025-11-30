@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild
 } from "@angular/core";
-import {Article, Group, SubGroup} from "../../../../models/common";
+import {AddArticleInput, Article, Group, SubGroup} from "../../../../models/common";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ArticleFormFields} from "../../../../constants/constants";
 import {ArticleRestApiService} from "../../../../services/rest-api-articles.service";
@@ -37,7 +37,7 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
   @Input() availableSubGroups: SubGroup[];
   @Input() isEditMode: boolean = false;
   @Output()
-  articleAdded = new EventEmitter<Article>();
+  articleAdded = new EventEmitter<AddArticleInput>();
   @Output()
   stopEdit = new EventEmitter();
   @Output()
@@ -125,14 +125,20 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
   }
 
   addArticle() {
+    let newGroup: string = "";
+    let newSubGroup: string = "";
     const newArticle = {title: "", content: "", group: "", subGroup: "", order: 999999999999999, ignoreHtml: false};
     if (this.selectedGroupFormControl.value === "" && this.newGroupFormControl.value) {
-      newArticle.group = this.newGroupFormControl.value;
+      // New group
+      newGroup = this.newGroupFormControl.value;
+      newArticle.group = newGroup;
     } else {
       newArticle.group = this.selectedGroupFormControl.value;
     }
     if (this.selectedSubGroupFormControl.value === "" && this.newSubGroupFormControl.value) {
-      newArticle.subGroup = this.newSubGroupFormControl.value;
+      // New subgroup
+      newSubGroup = this.newSubGroupFormControl.value;
+      newArticle.subGroup = newSubGroup;
       newArticle.order = 1;
     } else {
       newArticle.subGroup = this.selectedSubGroupFormControl.value;
@@ -145,7 +151,7 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
     if (this.isEditMode) {
       this.updateArticle(newArticle);
     } else {
-      this.articleAdded.emit(newArticle);
+      this.articleAdded.emit({newArticle, newGroup, newSubGroup});
       this.initGroup();
     }
     this.isBoldText = false;

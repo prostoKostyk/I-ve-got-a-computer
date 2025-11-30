@@ -1,5 +1,13 @@
 import {Component, EventEmitter, OnInit, Output} from "@angular/core";
-import {Article, DeleteGroupInput, Group, SubGroup} from "../../../../models/common";
+import {
+  AddArticleInput,
+  Article,
+  DeleteGroupInput,
+  Group,
+  GroupInput,
+  SubGroup,
+  SubGroupInput
+} from "../../../../models/common";
 import {ArticleRestApiService} from "../../../../services/rest-api-articles.service";
 import {finalize, Observable} from "rxjs";
 import {GroupRestApiService} from "../../../../services/rest-api-groups.service";
@@ -73,8 +81,36 @@ export class ArticleMainComponent implements OnInit {
     this.foundArticles = [];
   }
 
-  addArticle(article: Article) {
-    this.articleRestApiService.addArticle(article).subscribe((newArticles: Article[]) => {
+  addArticle(input: AddArticleInput) {
+    if(input.newGroup) {
+      const groupInput: GroupInput = {
+        group: input.newGroup
+      };
+      this.groupRestApiService.addGroup(groupInput).subscribe({
+        next: (data) => {
+          if (input.newSubGroup) {
+            const subGroupInput: SubGroupInput = {
+              subGroup: input.newSubGroup,
+              parentGroup: data[0].groupName ?? ""
+            }
+            this.groupRestApiService.addSubGroup(subGroupInput).subscribe({
+              next: (data) => {
+                this.postArticle(input.newArticle);
+              }
+            })
+          } else {
+            this.postArticle(input.newArticle);
+          }
+        }
+      })
+    }
+    else {
+      this.postArticle(input.newArticle);
+    }
+  }
+
+  postArticle(newArticle: Article) {
+    this.articleRestApiService.addArticle(newArticle).subscribe((newArticles: Article[]) => {
       const newArticle = newArticles[0];
       this.articles.push(newArticle);
       let indexOfGroup = this.availableGroups.findIndex(g => g.group === newArticle.group)
