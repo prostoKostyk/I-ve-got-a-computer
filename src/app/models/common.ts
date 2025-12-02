@@ -65,6 +65,7 @@ export interface DeleteGroupInput {
 export interface AddArticleInput {
   newArticle: Article,
   newGroup: string,
+  chosenGroup?: string,
   newSubGroup: string
 }
 

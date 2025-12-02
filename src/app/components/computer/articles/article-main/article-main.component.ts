@@ -103,6 +103,16 @@ export class ArticleMainComponent implements OnInit {
           }
         }
       })
+    } else if (input.newSubGroup) {
+      const subGroupInput: SubGroupInput = {
+        subGroup: input.newSubGroup,
+        parentGroup: input.chosenGroup ?? ""
+      }
+      this.groupRestApiService.addSubGroup(subGroupInput).subscribe({
+        next: (data) => {
+          this.postArticle(input.newArticle);
+        }
+      })
     }
     else {
       this.postArticle(input.newArticle);

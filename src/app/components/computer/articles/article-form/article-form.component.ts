@@ -151,7 +151,7 @@ export class ArticleFormComponent implements AfterViewInit, OnInit {
     if (this.isEditMode) {
       this.updateArticle(newArticle);
     } else {
-      this.articleAdded.emit({newArticle, newGroup, newSubGroup});
+      this.articleAdded.emit({newArticle, newGroup, newSubGroup, chosenGroup: this.selectedGroupFormControl.value});
       this.initGroup();
     }
     this.isBoldText = false;
